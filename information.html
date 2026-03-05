@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Information — Juliette & Keaton</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="page-hero">
+    <p class="hero-names">Juliette & Keaton</p>
+    <p class="hero-meta">SATURDAY, JULY 18, 2026 · CINNABAR VALLEY, NANAIMO BC</p>
+    <p id="countdown" class="countdown"></p>
+  </header>
+
+  <nav class="site-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="information.html">Information</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="accommodation.html">Accommodation</a></li>
+      <li><a href="dress-code.html">Dress Code</a></li>
+      <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Venue & address</h2>
+    <p>
+      <strong>1980 Richardson Road</strong><br>
+      Cinnabar Valley<br>
+      Nanaimo, BC
+    </p>
+
+    <h2>Start time</h2>
+    <p>The ceremony begins at <strong>3:00 PM</strong>. Please plan to arrive by <strong>2:30 PM</strong> so we can start on time.</p>
+
+    <h2>Getting there</h2>
+    <p>If you’re staying at our hotel block at the Coast Bastion Hotel in Nanaimo, a shuttle will be provided for pickup and drop-off. See the <a href="accommodation.html">Accommodation</a> page for details.</p>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-label">Celebrating Juliette & Keaton</p>
+  </footer>
+
+  <script>
+    (function() {
+      var d = new Date(2026, 6, 18);
+      var now = new Date();
+      var diff = d - now;
+      var days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+      var el = document.getElementById('countdown');
+      if (el) el.textContent = days === 0 ? "Today's the day!" : days + ' DAYS TO GO';
+    })();
+  </script>
+  <script src="js/dragonfly.js"></script>
+</body>
+</html>

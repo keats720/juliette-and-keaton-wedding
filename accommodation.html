@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accommodation — Juliette & Keaton</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="page-hero">
+    <p class="hero-names">Juliette & Keaton</p>
+    <p class="hero-meta">SATURDAY, JULY 18, 2026 · CINNABAR VALLEY, NANAIMO BC</p>
+    <p id="countdown" class="countdown"></p>
+  </header>
+
+  <nav class="site-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="information.html">Information</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="accommodation.html">Accommodation</a></li>
+      <li><a href="dress-code.html">Dress Code</a></li>
+      <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Hotel block</h2>
+    <p>We have reserved a block of rooms at <strong>Coast Bastion Hotel, Nanaimo</strong>. More booking details (rate code, link, or phone number) can be added here once you have them.</p>
+
+    <h2>Shuttle</h2>
+    <p>For guests staying at the Coast Bastion, we’ll provide a bus/shuttle for pickup and drop-off to the venue at 1980 Richardson Road, Cinnabar Valley. This will make it easy to enjoy the day without driving. Shuttle times will align with the schedule (including the last return at 12:30 AM).</p>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-label">Celebrating Juliette & Keaton</p>
+  </footer>
+
+  <script>
+    (function() {
+      var d = new Date(2026, 6, 18);
+      var now = new Date();
+      var diff = d - now;
+      var days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+      var el = document.getElementById('countdown');
+      if (el) el.textContent = days === 0 ? "Today's the day!" : days + ' DAYS TO GO';
+    })();
+  </script>
+  <script src="js/dragonfly.js"></script>
+</body>
+</html>

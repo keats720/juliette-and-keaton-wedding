@@ -1,0 +1,261 @@
+/* Juliette & Keaton — Wedding site styles */
+/* Clean, minimal: script + thin sans-serif (reference layout) */
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --cream: #F8F6F3;
+  --cream-dark: #EDE9E4;
+  --ink: #2c2c2c;
+  --ink-light: #5a5a5a;
+  --accent: #4A6B7C;
+  --save-date-blue: #5B7C85; /* soft blue-grey from save the date */
+  --white: #fff;
+  --script: 'Great Vibes', cursive;
+  --sans: 'Montserrat', sans-serif;
+  --sans-thin: 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--ink);
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Navigation — thin uppercase, no box, centered under title */
+.site-nav {
+  text-align: center;
+  padding: 1rem 1rem 1.5rem;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem 2rem;
+}
+
+.site-nav a {
+  font-family: var(--sans-thin);
+  font-size: 0.55rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Shared page hero (same title, names, date, countdown on every page) */
+.page-hero {
+  text-align: center;
+  padding: 2rem 1rem 0;
+}
+
+.page-hero .hero-title {
+  font-family: var(--script);
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+  color: var(--ink);
+  margin: 2rem 0 0.2rem;
+}
+
+.page-hero .hero-names {
+  font-family: var(--script);
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: var(--save-date-blue);
+  margin: 0;
+}
+
+.page-hero .hero-meta {
+  font-family: var(--sans-thin);
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0.4rem 0 0;
+}
+
+.page-hero .countdown {
+  font-family: var(--sans-thin);
+  font-size: 0.6rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-top: 0.35rem;
+}
+
+/* Main content area */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+h1, h2 {
+  font-family: var(--sans);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(61,79,92,0.15);
+}
+
+p {
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  font-family: var(--sans-thin);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.75rem;
+  background: var(--ink);
+  color: var(--white) !important;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: var(--accent);
+  text-decoration: none;
+}
+
+/* Footer — sticks to bottom when content is short */
+.site-footer {
+  position: relative;
+  margin-top: auto;
+  text-align: center;
+  padding: 2rem 1rem 5rem;
+  font-size: 0.9rem;
+  color: var(--ink-light);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer .footer-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+  color: var(--ink-light);
+}
+
+.site-footer .footer-date {
+  font-size: 0.55rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+
+/* Dragonfly — inside footer so it sticks with footer; above text; left position follows mouse */
+.site-footer .dragonfly-tracker {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 80px;
+  height: 60px;
+  margin-bottom: -0.5rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dragonfly-flipper {
+  width: 80px;
+  height: 60px;
+  transition: transform 0.4s ease-in-out;
+  transform-origin: center center;
+}
+
+.dragonfly-tracker .dragonfly-floater {
+  animation: dragonfly-float 3s ease-in-out infinite;
+}
+
+.dragonfly-tracker .dragonfly-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  color: var(--save-date-blue);
+}
+
+.dragonfly-tracker .wing,
+.dragonfly-tracker .tail {
+  transform-origin: 100px 75px;
+}
+
+.dragonfly-tracker .wing-top {
+  animation: dragonfly-flapTop 0.25s infinite alternate ease-in-out;
+}
+
+.dragonfly-tracker .wing-bottom {
+  animation: dragonfly-flapBottom 0.2s infinite alternate ease-in-out;
+  animation-delay: 0.05s;
+}
+
+.dragonfly-tracker .tail {
+  animation: dragonfly-tailBob 3s ease-in-out infinite;
+}
+
+@keyframes dragonfly-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes dragonfly-flapTop {
+  0% { transform: rotate(0deg) scaleY(1); }
+  100% { transform: rotate(-5deg) scaleY(0.7); }
+}
+
+@keyframes dragonfly-flapBottom {
+  0% { transform: rotate(0deg) scaleY(1); }
+  100% { transform: rotate(10deg) scaleY(0.5); }
+}
+
+@keyframes dragonfly-tailBob {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg); }
+}
