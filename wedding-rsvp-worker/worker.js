@@ -9,22 +9,25 @@
 // Required env vars (set in wrangler.toml):
 //   NOTION_DATABASE_ID — your guest list database ID
 //   ALLOWED_ORIGIN     — your wedding website domain (for CORS)
+//
+// Notion database expected properties:
+//   Name              — title (guest full name)
+//   Code              — rich_text (unique RSVP code sent via email)
+//   Email             — email
+//   Has Plus One      — checkbox
+//   RSVP              — select (Attending / Declined)
+//   Dietary Requirements — rich_text
+//   Song Request      — rich_text
+//   Notes             — rich_text
+//   Plus One Name     — rich_text
+//   Plus One Dietary  — rich_text
 // ============================================================
-
-// wrangler.toml example:
-// name = "wedding-rsvp"
-// main = "worker.js"
-// compatibility_date = "2024-01-01"
-// [vars]
-// NOTION_DATABASE_ID = "your-database-id-here"
-// ALLOWED_ORIGIN = "https://yourweddingsite.com"
 
 const NOTION_VERSION = '2022-06-28';
 const NOTION_BASE = 'https://api.notion.com/v1';
 
 export default {
   async fetch(request, env) {
-    // CORS
     const corsHeaders = {
       'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -55,23 +58,22 @@ export default {
 };
 
 // ============================================================
-// POST /lookup — find guest by name
+// POST /lookup — find guest by RSVP code
 // ============================================================
 async function handleLookup(request, env, corsHeaders) {
-  const { name } = await request.json();
+  const { code } = await request.json();
 
-  if (!name || typeof name !== 'string') {
-    return json({ error: 'Name is required' }, 400, corsHeaders);
+  if (!code || typeof code !== 'string') {
+    return json({ error: 'Code is required' }, 400, corsHeaders);
   }
 
-  // Query Notion database — case-insensitive search on "Name" property
   const res = await notionFetch(`${NOTION_BASE}/databases/${env.NOTION_DATABASE_ID}/query`, {
     method: 'POST',
     body: JSON.stringify({
       filter: {
-        property: 'Name',        // <-- adjust to your property name
+        property: 'Code',
         rich_text: {
-          equals: name
+          equals: code.trim()
         }
       }
     })
@@ -80,28 +82,8 @@ async function handleLookup(request, env, corsHeaders) {
   const data = await res.json();
   const results = data.results || [];
 
-  // If exact match fails, try a "contains" search as fallback
   if (results.length === 0) {
-    const fuzzyRes = await notionFetch(`${NOTION_BASE}/databases/${env.NOTION_DATABASE_ID}/query`, {
-      method: 'POST',
-      body: JSON.stringify({
-        filter: {
-          property: 'Name',
-          rich_text: {
-            contains: name
-          }
-        }
-      })
-    }, env);
-
-    const fuzzyData = await fuzzyRes.json();
-
-    if ((fuzzyData.results || []).length === 0) {
-      return json({ guest: null }, 200, corsHeaders);
-    }
-
-    // Return first fuzzy match
-    return json({ guest: formatGuest(fuzzyData.results[0]) }, 200, corsHeaders);
+    return json({ guest: null }, 200, corsHeaders);
   }
 
   return json({ guest: formatGuest(results[0]) }, 200, corsHeaders);
@@ -112,14 +94,12 @@ async function handleLookup(request, env, corsHeaders) {
 // ============================================================
 async function handleSubmit(request, env, corsHeaders) {
   const body = await request.json();
-  const { guestId, attending, dietary, songRequest, notes, plusOneName, plusOneDietary } = body;
+  const { guestId, attending, name, email, dietary, songRequest, notes, plusOneName, plusOneDietary } = body;
 
   if (!guestId) {
     return json({ error: 'guestId is required' }, 400, corsHeaders);
   }
 
-  // Build the properties to update
-  // Adjust these property names to match YOUR Notion database
   const properties = {
     'RSVP': {
       select: {
@@ -137,15 +117,26 @@ async function handleSubmit(request, env, corsHeaders) {
     },
   };
 
-  // Only write plus-one fields if they provided them
+  if (name) {
+    properties['Name'] = {
+      title: [{ text: { content: name } }]
+    };
+  }
+
+  if (email) {
+    properties['Email'] = {
+      email: email
+    };
+  }
+
   if (plusOneName) {
     properties['Plus One Name'] = {
       rich_text: [{ text: { content: plusOneName } }]
     };
   }
-  if (plusOneDietary) {
+  if (plusOneDietary !== undefined) {
     properties['Plus One Dietary'] = {
-      rich_text: [{ text: { content: plusOneDietary } }]
+      rich_text: [{ text: { content: plusOneDietary || '' } }]
     };
   }
 
@@ -167,16 +158,14 @@ async function handleSubmit(request, env, corsHeaders) {
 // Helpers
 // ============================================================
 
-// Extract guest data from a Notion page object
-// *** ADJUST property names here to match your database ***
 function formatGuest(page) {
   const props = page.properties;
 
   return {
     id: page.id,
     name: getTitle(props['Name']),
+    email: getEmail(props['Email']),
     hasPlusOne: getCheckbox(props['Has Plus One']),
-    // Include previous RSVP data so the form can pre-fill
     previousRsvp: getRsvpStatus(props) ? {
       attending: getSelect(props['RSVP']) === 'Attending',
       dietary: getRichText(props['Dietary Requirements']),
@@ -206,6 +195,10 @@ function getCheckbox(prop) {
 
 function getSelect(prop) {
   return prop?.select?.name || null;
+}
+
+function getEmail(prop) {
+  return prop?.email || '';
 }
 
 async function notionFetch(url, options, env) {

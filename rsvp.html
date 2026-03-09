@@ -7,24 +7,31 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
   <style>
+    .rsvp-bg-flower {
+      position: absolute;
+      top: 4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110vw;
+      max-width: 900px;
+      height: auto;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+      color: var(--text);
+    }
+
     .rsvp-container {
+      position: relative;
+      z-index: 1;
       width: 100%;
       max-width: 520px;
       margin: 0 auto;
-      padding: 3rem 2rem 2rem;
-    }
-
-    .flourish {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: var(--text);
-      font-size: 1.5rem;
-      letter-spacing: 0.5rem;
-      opacity: 0.35;
+      padding: 3rem 2rem 4rem;
     }
 
     .rsvp-card {
-      background: rgba(213, 226, 240, 0.55);
+      background: rgba(213, 226, 240, 0.88);
       border: 1px solid var(--btn-border);
       padding: 3rem 2.5rem;
       position: relative;
@@ -75,12 +82,13 @@
     }
 
     .rsvp-card input[type="text"],
+    .rsvp-card input[type="email"],
     .rsvp-card textarea,
     .rsvp-card select {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid var(--btn-border);
-      background: rgba(191, 214, 236, 0.35);
+      background: #d3dfed;
       font-family: var(--font-tenor);
       font-weight: 400;
       font-size: 0.85rem;
@@ -153,6 +161,63 @@
       border-color: var(--text-muted);
       background: var(--text-muted);
       box-shadow: inset 0 0 0 3px white;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      font-family: var(--font-tenor);
+      font-size: 0.8rem;
+      color: var(--text);
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--text);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .checkbox-option input[type="checkbox"]:checked {
+      border-color: var(--text-muted);
+      background: var(--text-muted);
+    }
+
+    .checkbox-option input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .other-text-wrap {
+      width: 100%;
+      margin-top: 0.5rem;
+      display: none;
+      animation: rsvp-fadeIn 0.3s ease;
+    }
+
+    .other-text-wrap.visible {
+      display: block;
     }
 
     .rsvp-btn {
@@ -299,6 +364,15 @@
       font-size: 0.85rem;
     }
 
+    .success-screen .more-info {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--btn-border);
+      font-family: var(--font-loop);
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
     .spinner {
       display: inline-block;
       width: 16px;
@@ -330,6 +404,7 @@
       .rsvp-card h1 { font-size: 1.8rem; }
       .radio-group { flex-direction: column; gap: 0.75rem; }
       .rsvp-container { padding: 2rem 1.5rem; }
+      .checkbox-group { flex-direction: column; gap: 0.6rem; }
     }
   </style>
 </head>
@@ -347,9 +422,10 @@
     </ul>
   </nav>
 
+  <img src="assets/flower.svg" alt="" class="rsvp-bg-flower" aria-hidden="true">
+
   <main>
     <div class="rsvp-container">
-      <div class="flourish">&#10043; &nbsp; &#10043; &nbsp; &#10043;</div>
       <div class="rsvp-card">
 
         <h1>RSVP</h1>
@@ -357,18 +433,30 @@
 
         <div id="msg" class="rsvp-message"></div>
 
-        <div id="lookup-section">
+        <!-- Step 1: Code entry (hidden for testing) -->
+        <div id="lookup-section" style="display:none;">
           <div class="field-group">
-            <label for="guest-name">Your Full Name</label>
+            <label for="rsvp-code">Your RSVP Code</label>
             <div class="lookup-group">
-              <input type="text" id="guest-name" placeholder="As it appears on your invitation" autocomplete="off">
-              <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Find</button>
+              <input type="text" id="rsvp-code" placeholder="Enter the code from your invitation" autocomplete="off">
+              <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Start</button>
             </div>
           </div>
         </div>
 
-        <div id="rsvp-fields" class="rsvp-fields">
+        <!-- Step 2: RSVP form -->
+        <div id="rsvp-fields" class="rsvp-fields visible">
           <div class="guest-name-display" id="guest-greeting"></div>
+
+          <div class="field-group">
+            <label for="guest-name">Your Name</label>
+            <input type="text" id="guest-name" placeholder="Full name">
+          </div>
+
+          <div class="field-group">
+            <label for="guest-email">Email Address</label>
+            <input type="email" id="guest-email" placeholder="your@email.com">
+          </div>
 
           <div class="field-group">
             <label>Will you be attending?</label>
@@ -387,8 +475,32 @@
           <div id="attending-details" style="display:none;">
 
             <div class="field-group">
-              <label for="dietary">Dietary Requirements</label>
-              <input type="text" id="dietary" placeholder="Allergies, vegetarian, etc.">
+              <label>Dietary Requirements</label>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="dietary" value="Vegetarian" onchange="onDietaryChange('dietary')">
+                  <span>Vegetarian</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="dietary" value="Vegan" onchange="onDietaryChange('dietary')">
+                  <span>Vegan</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="dietary" value="Gluten Free" onchange="onDietaryChange('dietary')">
+                  <span>Gluten Free</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="dietary" value="Shellfish" onchange="onDietaryChange('dietary')">
+                  <span>Shellfish</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="dietary" value="Other" onchange="onDietaryChange('dietary')">
+                  <span>Other</span>
+                </label>
+              </div>
+              <div id="dietary-other-wrap" class="other-text-wrap">
+                <input type="text" id="dietary-other" placeholder="Please specify...">
+              </div>
             </div>
 
             <div id="plus-one-section" class="plus-one-section">
@@ -398,8 +510,32 @@
                 <input type="text" id="plus-one-name" placeholder="Full name">
               </div>
               <div class="field-group">
-                <label for="plus-one-dietary">Their Dietary Requirements</label>
-                <input type="text" id="plus-one-dietary" placeholder="Allergies, vegetarian, etc.">
+                <label>Their Dietary Requirements</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="po-dietary" value="Vegetarian" onchange="onDietaryChange('po-dietary')">
+                    <span>Vegetarian</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="po-dietary" value="Vegan" onchange="onDietaryChange('po-dietary')">
+                    <span>Vegan</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="po-dietary" value="Gluten Free" onchange="onDietaryChange('po-dietary')">
+                    <span>Gluten Free</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="po-dietary" value="Shellfish" onchange="onDietaryChange('po-dietary')">
+                    <span>Shellfish</span>
+                  </label>
+                  <label class="checkbox-option">
+                    <input type="checkbox" name="po-dietary" value="Other" onchange="onDietaryChange('po-dietary')">
+                    <span>Other</span>
+                  </label>
+                </div>
+                <div id="po-dietary-other-wrap" class="other-text-wrap">
+                  <input type="text" id="po-dietary-other" placeholder="Please specify...">
+                </div>
               </div>
             </div>
           </div>
@@ -419,9 +555,11 @@
           </button>
         </div>
 
+        <!-- Step 3: Success -->
         <div id="success-screen" class="success-screen">
           <h2>Thank You</h2>
           <p id="success-message"></p>
+          <p class="more-info">More information to follow</p>
         </div>
 
       </div>
@@ -436,12 +574,22 @@
   <script>
     const API_BASE = '/api/rsvp';
 
-    let currentGuest = null;
+    // TEST MODE: skip code lookup, show full form with plus-one
+    let currentGuest = { id: 'test-id', name: '', email: '', hasPlusOne: true };
+    document.getElementById('plus-one-section').classList.add('visible');
+
+    (function autoFillFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (code) {
+        document.getElementById('rsvp-code').value = code;
+      }
+    })();
 
     async function lookupGuest() {
-      const name = document.getElementById('guest-name').value.trim();
-      if (!name) {
-        showMessage('Please enter your name.', 'error');
+      const code = document.getElementById('rsvp-code').value.trim();
+      if (!code) {
+        showMessage('Please enter your RSVP code.', 'error');
         return;
       }
 
@@ -452,14 +600,14 @@
         const res = await fetch(`${API_BASE}/lookup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name })
+          body: JSON.stringify({ code })
         });
 
         const data = await res.json();
 
         if (!res.ok || !data.guest) {
           showMessage(
-            "We couldn't find that name on our guest list. Please try the name as it appears on your invitation.",
+            "We couldn't find that code. Please check the code from your invitation email and try again.",
             'error'
           );
           setLoading('lookup-btn', false);
@@ -471,6 +619,10 @@
         document.getElementById('lookup-section').style.display = 'none';
         document.getElementById('rsvp-fields').classList.add('visible');
         document.getElementById('guest-greeting').textContent = currentGuest.name;
+        document.getElementById('guest-name').value = currentGuest.name;
+        if (currentGuest.email) {
+          document.getElementById('guest-email').value = currentGuest.email;
+        }
 
         if (currentGuest.hasPlusOne) {
           document.getElementById('plus-one-section').classList.add('visible');
@@ -489,7 +641,7 @@
       setLoading('lookup-btn', false);
     }
 
-    document.getElementById('guest-name').addEventListener('keydown', (e) => {
+    document.getElementById('rsvp-code').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') lookupGuest();
     });
 
@@ -497,6 +649,36 @@
       const val = document.querySelector('input[name="attending"]:checked')?.value;
       const details = document.getElementById('attending-details');
       details.style.display = val === 'yes' ? 'block' : 'none';
+    }
+
+    function onDietaryChange(groupName) {
+      const otherChecked = document.querySelector(`input[name="${groupName}"][value="Other"]`)?.checked;
+      const wrapId = groupName === 'dietary' ? 'dietary-other-wrap' : 'po-dietary-other-wrap';
+      const wrap = document.getElementById(wrapId);
+      if (otherChecked) {
+        wrap.classList.add('visible');
+      } else {
+        wrap.classList.remove('visible');
+      }
+    }
+
+    function collectDietary(groupName) {
+      const checked = Array.from(document.querySelectorAll(`input[name="${groupName}"]:checked`))
+        .map(cb => cb.value)
+        .filter(v => v !== 'Other');
+
+      const otherChecked = document.querySelector(`input[name="${groupName}"][value="Other"]`)?.checked;
+      if (otherChecked) {
+        const otherId = groupName === 'dietary' ? 'dietary-other' : 'po-dietary-other';
+        const otherText = document.getElementById(otherId).value.trim();
+        if (otherText) {
+          checked.push('Other: ' + otherText);
+        } else {
+          checked.push('Other');
+        }
+      }
+
+      return checked.join(', ');
     }
 
     async function submitRsvp() {
@@ -511,14 +693,16 @@
       const payload = {
         guestId: currentGuest.id,
         attending: attending === 'yes',
-        dietary: document.getElementById('dietary').value.trim(),
+        name: document.getElementById('guest-name').value.trim(),
+        email: document.getElementById('guest-email').value.trim(),
+        dietary: collectDietary('dietary'),
         songRequest: document.getElementById('song').value.trim(),
         notes: document.getElementById('notes').value.trim(),
       };
 
       if (currentGuest.hasPlusOne && attending === 'yes') {
         payload.plusOneName = document.getElementById('plus-one-name').value.trim();
-        payload.plusOneDietary = document.getElementById('plus-one-dietary').value.trim();
+        payload.plusOneDietary = collectDietary('po-dietary');
       }
 
       try {
@@ -550,13 +734,34 @@
         const radio = document.querySelector(`input[name="attending"][value="${rsvp.attending ? 'yes' : 'no'}"]`);
         if (radio) { radio.checked = true; onAttendingChange(); }
       }
-      if (rsvp.dietary) document.getElementById('dietary').value = rsvp.dietary;
+      if (rsvp.dietary) prefillDietary('dietary', rsvp.dietary);
       if (rsvp.songRequest) document.getElementById('song').value = rsvp.songRequest;
       if (rsvp.notes) document.getElementById('notes').value = rsvp.notes;
       if (rsvp.plusOneName) document.getElementById('plus-one-name').value = rsvp.plusOneName;
-      if (rsvp.plusOneDietary) document.getElementById('plus-one-dietary').value = rsvp.plusOneDietary;
+      if (rsvp.plusOneDietary) prefillDietary('po-dietary', rsvp.plusOneDietary);
 
       showMessage('We found your previous RSVP — feel free to update it.', 'info');
+    }
+
+    function prefillDietary(groupName, value) {
+      const items = value.split(', ');
+      const standardOptions = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish'];
+
+      items.forEach(item => {
+        const match = standardOptions.find(opt => item === opt);
+        if (match) {
+          const cb = document.querySelector(`input[name="${groupName}"][value="${match}"]`);
+          if (cb) cb.checked = true;
+        } else if (item.startsWith('Other: ') || item === 'Other') {
+          const cb = document.querySelector(`input[name="${groupName}"][value="Other"]`);
+          if (cb) cb.checked = true;
+          onDietaryChange(groupName);
+          if (item.startsWith('Other: ')) {
+            const otherId = groupName === 'dietary' ? 'dietary-other' : 'po-dietary-other';
+            document.getElementById(otherId).value = item.replace('Other: ', '');
+          }
+        }
+      });
     }
 
     function showMessage(text, type) {
