@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSVP — Juliette & Keaton</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
+  <style>
+    .rsvp-container {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+    }
+
+    .flourish {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-size: 1.5rem;
+      letter-spacing: 0.5rem;
+      opacity: 0.35;
+    }
+
+    .rsvp-card {
+      background: rgba(213, 226, 240, 0.55);
+      border: 1px solid var(--btn-border);
+      padding: 3rem 2.5rem;
+      position: relative;
+      border-radius: 4px;
+    }
+
+    .rsvp-card::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid var(--btn-border);
+      border-radius: 3px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .rsvp-card h1 {
+      font-family: var(--font-newicon);
+      font-weight: 300;
+      font-size: 2.4rem;
+      text-align: center;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .rsvp-subtitle {
+      text-align: center;
+      font-family: var(--font-loop);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .rsvp-card label {
+      display: block;
+      font-family: var(--font-tenor);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .rsvp-card input[type="text"],
+    .rsvp-card textarea,
+    .rsvp-card select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--btn-border);
+      background: rgba(191, 214, 236, 0.35);
+      font-family: var(--font-tenor);
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      border-radius: 4px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .rsvp-card input::placeholder,
+    .rsvp-card textarea::placeholder {
+      color: var(--btn-text);
+      opacity: 0.6;
+    }
+
+    .rsvp-card input:focus,
+    .rsvp-card textarea:focus,
+    .rsvp-card select:focus {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px rgba(44, 126, 244, 0.12);
+    }
+
+    .rsvp-card textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .lookup-group {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .lookup-group input {
+      flex: 1;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-family: var(--font-tenor);
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .radio-option input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--text);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .radio-option input[type="radio"]:checked {
+      border-color: var(--text-muted);
+      background: var(--text-muted);
+      box-shadow: inset 0 0 0 3px white;
+    }
+
+    .rsvp-btn {
+      display: inline-block;
+      font-family: var(--font-newicon);
+      font-weight: 400;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.75rem 2rem;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--btn-border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .rsvp-btn:hover {
+      background: #cdd9ea;
+      border-color: #bccde2;
+    }
+
+    .rsvp-btn-primary {
+      background: var(--text);
+      color: var(--white);
+      border-color: var(--text);
+    }
+
+    .rsvp-btn-primary:hover {
+      background: var(--text-muted);
+      border-color: var(--text-muted);
+    }
+
+    .rsvp-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .rsvp-btn-full {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .rsvp-fields {
+      display: none;
+      animation: rsvp-fadeIn 0.4s ease;
+    }
+
+    .rsvp-fields.visible {
+      display: block;
+    }
+
+    .plus-one-section {
+      display: none;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--btn-border);
+      animation: rsvp-fadeIn 0.4s ease;
+    }
+
+    .plus-one-section.visible {
+      display: block;
+    }
+
+    .section-label {
+      font-family: var(--font-loop);
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .rsvp-message {
+      text-align: center;
+      padding: 0.75rem;
+      font-family: var(--font-tenor);
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+      display: none;
+      border-radius: 4px;
+    }
+
+    .rsvp-message.visible {
+      display: block;
+      animation: rsvp-fadeIn 0.3s ease;
+    }
+
+    .rsvp-message.error {
+      color: #B85C5C;
+      background: #faf0f0;
+      border: 1px solid #e8d0d0;
+    }
+
+    .rsvp-message.success {
+      color: var(--text-muted);
+      background: rgba(213, 226, 240, 0.5);
+      border: 1px solid var(--btn-border);
+    }
+
+    .rsvp-message.info {
+      color: var(--text-muted);
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+    }
+
+    .guest-name-display {
+      font-family: var(--font-loop);
+      font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: 1.75rem;
+      color: var(--text);
+    }
+
+    .rsvp-divider {
+      height: 1px;
+      background: var(--btn-border);
+      margin: 2rem 0;
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+      animation: rsvp-fadeIn 0.5s ease;
+    }
+
+    .success-screen.visible {
+      display: block;
+    }
+
+    .success-screen h2 {
+      font-family: var(--font-newicon);
+      font-weight: 300;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+
+    .success-screen p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: rsvp-spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+
+    .rsvp-btn:not(.rsvp-btn-primary) .spinner {
+      border: 2px solid rgba(44, 126, 244, 0.3);
+      border-top-color: var(--text);
+    }
+
+    @keyframes rsvp-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rsvp-fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      .rsvp-card { padding: 2rem 1.5rem; }
+      .rsvp-card h1 { font-size: 1.8rem; }
+      .radio-group { flex-direction: column; gap: 0.75rem; }
+      .rsvp-container { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="information.html">Information</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="dress-code.html">Attire</a></li>
+      <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="rsvp-container">
+      <div class="flourish">&#10043; &nbsp; &#10043; &nbsp; &#10043;</div>
+      <div class="rsvp-card">
+
+        <h1>RSVP</h1>
+        <p class="rsvp-subtitle">We would be honoured by your presence</p>
+
+        <div id="msg" class="rsvp-message"></div>
+
+        <div id="lookup-section">
+          <div class="field-group">
+            <label for="guest-name">Your Full Name</label>
+            <div class="lookup-group">
+              <input type="text" id="guest-name" placeholder="As it appears on your invitation" autocomplete="off">
+              <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Find</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="rsvp-fields" class="rsvp-fields">
+          <div class="guest-name-display" id="guest-greeting"></div>
+
+          <div class="field-group">
+            <label>Will you be attending?</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="attending" value="yes" onchange="onAttendingChange()">
+                <span>Joyfully accepts</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="attending" value="no" onchange="onAttendingChange()">
+                <span>Respectfully declines</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="attending-details" style="display:none;">
+
+            <div class="field-group">
+              <label for="dietary">Dietary Requirements</label>
+              <input type="text" id="dietary" placeholder="Allergies, vegetarian, etc.">
+            </div>
+
+            <div id="plus-one-section" class="plus-one-section">
+              <p class="section-label">Your Plus One</p>
+              <div class="field-group">
+                <label for="plus-one-name">Guest Name</label>
+                <input type="text" id="plus-one-name" placeholder="Full name">
+              </div>
+              <div class="field-group">
+                <label for="plus-one-dietary">Their Dietary Requirements</label>
+                <input type="text" id="plus-one-dietary" placeholder="Allergies, vegetarian, etc.">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="song">Song Request</label>
+            <input type="text" id="song" placeholder="Get us on the dance floor with...">
+          </div>
+
+          <div class="field-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" placeholder="Anything else you'd like us to know"></textarea>
+          </div>
+
+          <button class="rsvp-btn rsvp-btn-primary rsvp-btn-full" id="submit-btn" onclick="submitRsvp()">
+            Send RSVP
+          </button>
+        </div>
+
+        <div id="success-screen" class="success-screen">
+          <h2>Thank You</h2>
+          <p id="success-message"></p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <!-- Dragonfly injected by js/dragonfly.js -->
+  </footer>
+
+  <script src="js/dragonfly.js"></script>
+  <script>
+    const API_BASE = '/api/rsvp';
+
+    let currentGuest = null;
+
+    async function lookupGuest() {
+      const name = document.getElementById('guest-name').value.trim();
+      if (!name) {
+        showMessage('Please enter your name.', 'error');
+        return;
+      }
+
+      setLoading('lookup-btn', true);
+      hideMessage();
+
+      try {
+        const res = await fetch(`${API_BASE}/lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.guest) {
+          showMessage(
+            "We couldn't find that name on our guest list. Please try the name as it appears on your invitation.",
+            'error'
+          );
+          setLoading('lookup-btn', false);
+          return;
+        }
+
+        currentGuest = data.guest;
+
+        document.getElementById('lookup-section').style.display = 'none';
+        document.getElementById('rsvp-fields').classList.add('visible');
+        document.getElementById('guest-greeting').textContent = currentGuest.name;
+
+        if (currentGuest.hasPlusOne) {
+          document.getElementById('plus-one-section').classList.add('visible');
+        }
+
+        if (currentGuest.previousRsvp) {
+          prefillForm(currentGuest.previousRsvp);
+        }
+
+        hideMessage();
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong. Please try again.', 'error');
+      }
+
+      setLoading('lookup-btn', false);
+    }
+
+    document.getElementById('guest-name').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') lookupGuest();
+    });
+
+    function onAttendingChange() {
+      const val = document.querySelector('input[name="attending"]:checked')?.value;
+      const details = document.getElementById('attending-details');
+      details.style.display = val === 'yes' ? 'block' : 'none';
+    }
+
+    async function submitRsvp() {
+      const attending = document.querySelector('input[name="attending"]:checked')?.value;
+      if (!attending) {
+        showMessage('Please let us know if you can make it.', 'error');
+        return;
+      }
+
+      setLoading('submit-btn', true);
+
+      const payload = {
+        guestId: currentGuest.id,
+        attending: attending === 'yes',
+        dietary: document.getElementById('dietary').value.trim(),
+        songRequest: document.getElementById('song').value.trim(),
+        notes: document.getElementById('notes').value.trim(),
+      };
+
+      if (currentGuest.hasPlusOne && attending === 'yes') {
+        payload.plusOneName = document.getElementById('plus-one-name').value.trim();
+        payload.plusOneDietary = document.getElementById('plus-one-dietary').value.trim();
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Submit failed');
+
+        document.getElementById('rsvp-fields').classList.remove('visible');
+        document.getElementById('success-screen').classList.add('visible');
+        document.getElementById('success-message').textContent =
+          attending === 'yes'
+            ? "We can't wait to celebrate with you!"
+            : "We'll miss you, but thank you for letting us know.";
+
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong submitting your RSVP. Please try again.', 'error');
+      }
+
+      setLoading('submit-btn', false);
+    }
+
+    function prefillForm(rsvp) {
+      if (rsvp.attending !== undefined) {
+        const radio = document.querySelector(`input[name="attending"][value="${rsvp.attending ? 'yes' : 'no'}"]`);
+        if (radio) { radio.checked = true; onAttendingChange(); }
+      }
+      if (rsvp.dietary) document.getElementById('dietary').value = rsvp.dietary;
+      if (rsvp.songRequest) document.getElementById('song').value = rsvp.songRequest;
+      if (rsvp.notes) document.getElementById('notes').value = rsvp.notes;
+      if (rsvp.plusOneName) document.getElementById('plus-one-name').value = rsvp.plusOneName;
+      if (rsvp.plusOneDietary) document.getElementById('plus-one-dietary').value = rsvp.plusOneDietary;
+
+      showMessage('We found your previous RSVP — feel free to update it.', 'info');
+    }
+
+    function showMessage(text, type) {
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = `rsvp-message visible ${type}`;
+    }
+
+    function hideMessage() {
+      document.getElementById('msg').className = 'rsvp-message';
+    }
+
+    function setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      if (loading) {
+        btn.disabled = true;
+        btn._origHTML = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner"></span> ' + btn.textContent;
+      } else {
+        btn.disabled = false;
+        if (btn._origHTML) btn.innerHTML = btn._origHTML;
+      }
+    }
+  </script>
+</body>
+</html>
