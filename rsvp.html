@@ -17,7 +17,7 @@
 
     .rsvp-bg-flower {
       position: absolute;
-      top: 4rem;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 110vw;
@@ -430,9 +430,8 @@
     </ul>
   </nav>
 
-  <img src="assets/flower.svg" alt="" class="rsvp-bg-flower" aria-hidden="true">
-
-  <main>
+  <main style="position: relative;">
+    <img src="assets/flower.svg" alt="" class="rsvp-bg-flower" aria-hidden="true">
     <div class="rsvp-container">
       <div class="rsvp-card">
 
@@ -441,19 +440,19 @@
 
         <div id="msg" class="rsvp-message"></div>
 
-        <!-- Step 1: Code entry (hidden for testing) -->
-        <div id="lookup-section" style="display:none;">
+        <!-- Step 1: Code entry -->
+        <div id="lookup-section">
           <div class="field-group">
             <label for="rsvp-code">Your RSVP Code</label>
             <div class="lookup-group">
-              <input type="text" id="rsvp-code" placeholder="Enter the code from your invitation" autocomplete="off">
+              <input type="text" id="rsvp-code" placeholder="Enter your code" autocomplete="off">
               <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Start</button>
             </div>
           </div>
         </div>
 
         <!-- Step 2: RSVP form -->
-        <div id="rsvp-fields" class="rsvp-fields visible">
+        <div id="rsvp-fields" class="rsvp-fields">
           <div class="guest-name-display" id="guest-greeting"></div>
 
           <div class="field-group">
@@ -582,9 +581,7 @@
   <script>
     const API_BASE = '/api/rsvp';
 
-    // TEST MODE: skip code lookup, show full form with plus-one
-    let currentGuest = { id: 'test-id', name: '', email: '', hasPlusOne: true };
-    document.getElementById('plus-one-section').classList.add('visible');
+    let currentGuest = null;
 
     (function autoFillFromUrl() {
       const params = new URLSearchParams(window.location.search);
