@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Schedule — Juliette & Keaton</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
   <style>
     .schedule-list { list-style: none; padding: 0; margin: 0; }
     .schedule-list li { padding: 0.75rem 0; border-bottom: 1px solid rgba(44,44,44,0.1); display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
@@ -16,19 +17,12 @@
   </style>
 </head>
 <body>
-  <header class="page-hero">
-    <p class="hero-names">Juliette & Keaton</p>
-    <p class="hero-meta">SATURDAY, JULY 18, 2026 · CINNABAR VALLEY, NANAIMO BC</p>
-    <p id="countdown" class="countdown"></p>
-  </header>
-
   <nav class="site-nav">
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="information.html">Information</a></li>
       <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="accommodation.html">Accommodation</a></li>
-      <li><a href="dress-code.html">Dress Code</a></li>
+      <li><a href="dress-code.html">Attire</a></li>
       <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
     </ul>
   </nav>
@@ -75,16 +69,6 @@
     <p class="footer-label">Celebrating Juliette & Keaton</p>
   </footer>
 
-  <script>
-    (function() {
-      var d = new Date(2026, 6, 18);
-      var now = new Date();
-      var diff = d - now;
-      var days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-      var el = document.getElementById('countdown');
-      if (el) el.textContent = days === 0 ? "Today's the day!" : days + ' DAYS TO GO';
-    })();
-  </script>
   <script src="js/dragonfly.js"></script>
 </body>
 </html>
