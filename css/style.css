@@ -63,6 +63,7 @@ a:hover {
   padding: 1.25rem 1rem;
   background: #d5e2f0;
   border-bottom: 1px solid rgba(44, 126, 244, 0.35);
+  position: relative;
 }
 
 .site-nav ul {
@@ -97,6 +98,66 @@ a:hover {
 .site-nav a:hover {
   color: var(--text);
   text-decoration: none;
+}
+
+/* Hamburger toggle — hidden on desktop */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--btn-text);
+  border-radius: 1px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.nav-toggle span + span {
+  margin-top: 5px;
+}
+
+.site-nav.open .nav-toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.site-nav.open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-nav.open .nav-toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 600px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .site-nav ul {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 1rem;
+  }
+
+  .site-nav.open ul {
+    display: flex;
+  }
+
+  .site-nav li + li::before {
+    display: none;
+  }
+
+  .site-nav li {
+    padding: 0.6rem 0;
+  }
 }
 
 /* Shared page hero (same title, names, date, countdown on every page) */
@@ -372,22 +433,13 @@ a:hover {
 
 /* Main content area (inner pages only) */
 main:not(.home-page) {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 0 0 2rem;
 }
 
 h1, h2 {
   font-family: var(--sans);
   font-weight: 400;
   color: var(--text);
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin: 2rem 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(44, 126, 244, 0.35);
 }
 
 p {
@@ -398,6 +450,130 @@ p {
 
 main p {
   color: var(--text);
+}
+
+/* Inner page title — mixed-font display heading */
+.page-title {
+  padding: 3rem 2rem 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-title h1 {
+  font-family: var(--font-newicon);
+  font-size: clamp(2.4rem, 6vw, 3.5rem);
+  font-weight: 300;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 0.95;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.page-title .title-script {
+  font-family: var(--font-loop);
+  font-size: 0.95em;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Event / info blocks — 2-column grid */
+.event-block {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  grid-template-rows: auto auto;
+  gap: 0.5rem 2rem;
+  padding: 1.5rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.event-name {
+  font-family: var(--font-newicon);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.event-info {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: center;
+  justify-content: center;
+}
+
+.event-date-line {
+  height: 1px;
+  background: var(--text);
+  opacity: 0.55;
+}
+
+.event-date {
+  font-family: var(--font-tenor);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  padding: 0.45rem 0 0.1rem;
+}
+
+.event-time {
+  font-family: var(--font-tenor);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  padding: 0 0 0.45rem;
+}
+
+.event-description {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--font-tenor);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .page-title {
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .event-block {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .event-name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .event-info {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .event-description {
+    grid-column: 1;
+    grid-row: 3;
+  }
 }
 
 /* Buttons */

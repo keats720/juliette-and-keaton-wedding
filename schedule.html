@@ -6,18 +6,12 @@
   <title>Schedule — Juliette & Keaton</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
-  <style>
-    .schedule-list { list-style: none; padding: 0; margin: 0; }
-    .schedule-list li { padding: 0.75rem 0; border-bottom: 1px solid rgba(44,44,44,0.1); display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
-    .schedule-list li:last-child { border-bottom: none; }
-    .schedule-time { font-family: var(--sans); font-weight: 600; color: var(--accent); min-width: 5rem; }
-    .schedule-event { font-weight: 600; color: var(--ink); }
-    .schedule-note { font-size: 0.95rem; color: var(--ink-light); width: 100%; margin-left: 5rem; }
-    @media (max-width: 480px) { .schedule-note { margin-left: 0; } }
-  </style>
 </head>
 <body>
   <nav class="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="information.html">Information</a></li>
@@ -28,45 +22,57 @@
   </nav>
 
   <main>
-    <h2>Friday, July 17</h2>
-    <ul class="schedule-list">
-      <li>
-        <span class="schedule-time">Evening</span>
-        <span class="schedule-event">Drop-in BBQ</span>
-        <span class="schedule-note">Casual welcome — stop by when you can.</span>
-      </li>
-    </ul>
+    <div class="page-title">
+      <h1>Schedule<br><span class="title-script">of</span> Events</h1>
+    </div>
 
-    <h2>Saturday, July 18</h2>
-    <ul class="schedule-list">
-      <li>
-        <span class="schedule-time">2:30 PM</span>
-        <span class="schedule-event">Guests arrive</span>
-        <span class="schedule-note">Please be seated by 2:30 so we can begin on time.</span>
-      </li>
-      <li>
-        <span class="schedule-time">3:00 PM</span>
-        <span class="schedule-event">Ceremony</span>
-      </li>
-      <li>
-        <span class="schedule-time">6:30 PM</span>
-        <span class="schedule-event">Reception dinner</span>
-      </li>
-      <li>
-        <span class="schedule-time">9:00 PM</span>
-        <span class="schedule-event">Dancing</span>
-        <span class="schedule-note">Dance floor open for the rest of the night.</span>
-      </li>
-      <li>
-        <span class="schedule-time">12:30 AM</span>
-        <span class="schedule-event">Last shuttle to hotel</span>
-        <span class="schedule-note">Final shuttle departs for Coast Bastion Nanaimo.</span>
-      </li>
-    </ul>
+    <div class="event-block">
+      <div class="event-name">Welcome BBQ</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Friday, July 17</div>
+        <div class="event-time">5:00 PM – 9:00 PM</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">A casual meal for those who are able to attend — stop by when you can.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Wedding Ceremony</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Saturday, July 18</div>
+        <div class="event-time">3:00 PM</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">Please arrive by 2:15 PM so we can begin on time.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Reception Dinner</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Saturday, July 18</div>
+        <div class="event-time">6:30 PM</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">Dinner followed by dancing until the end of the night.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Sunday Brunch</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Sunday, July 19</div>
+        <div class="event-time">9:30 AM – 11:00 AM</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">Join us at the farm for a relaxed morning brunch before you head out.</div>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <p class="footer-label">Celebrating Juliette & Keaton</p>
+    <!-- Dragonfly injected by js/dragonfly.js -->
   </footer>
 
   <script src="js/dragonfly.js"></script>

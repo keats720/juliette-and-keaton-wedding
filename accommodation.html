@@ -9,6 +9,9 @@
 </head>
 <body>
   <nav class="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="information.html">Information</a></li>
@@ -19,15 +22,35 @@
   </nav>
 
   <main>
-    <h2>Hotel block</h2>
-    <p>We have reserved a block of rooms at <strong>Coast Bastion Hotel, Nanaimo</strong>. More booking details (rate code, link, or phone number) can be added here once you have them.</p>
+    <div class="page-title">
+      <h1>Places<br><span class="title-script">to</span> Stay</h1>
+    </div>
 
-    <h2>Shuttle</h2>
-    <p>For guests staying at the Coast Bastion, we’ll provide a bus/shuttle for pickup and drop-off to the venue at 1980 Richardson Road, Cinnabar Valley. This will make it easy to enjoy the day without driving. Shuttle times will align with the schedule (including the last return at 12:30 AM).</p>
+    <div class="event-block">
+      <div class="event-name">Hotel Block</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Coast Bastion Hotel</div>
+        <div class="event-time">Nanaimo, BC</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">We have reserved a block of rooms. More booking details coming soon.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Shuttle</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">To &amp; From Venue</div>
+        <div class="event-time">1980 Richardson Road</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">Shuttle provided for guests at the Coast Bastion. Times will align with the schedule, including the last return at 12:30 AM.</div>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <p class="footer-label">Celebrating Juliette & Keaton</p>
+    <!-- Dragonfly injected by js/dragonfly.js -->
   </footer>
 
   <script src="js/dragonfly.js"></script>
