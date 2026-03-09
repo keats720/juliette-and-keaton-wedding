@@ -286,18 +286,10 @@ a:hover {
 .home-floral .home-floral-img {
   width: 100%;
   height: 100%;
-  background-color: var(--text);
-  mask-image: url("../assets/flower.svg");
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  -webkit-mask-image: url("../assets/flower.svg");
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  aspect-ratio: 3381 / 2838;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  aspect-ratio: 1420 / 1192;
 }
 
 .home-rsvp-wrap {
