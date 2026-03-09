@@ -563,6 +563,7 @@ main p {
   .event-name {
     grid-column: 1;
     grid-row: 1;
+    color: #1a5ab8;
   }
 
   .event-info {
@@ -573,6 +574,11 @@ main p {
   .event-description {
     grid-column: 1;
     grid-row: 3;
+  }
+
+  .event-date,
+  .event-time {
+    text-align: left;
   }
 }
 
