@@ -420,6 +420,20 @@ a:hover {
   .home-details {
     padding-bottom: 0;
     margin-bottom: 0;
+    width: 100%;
+  }
+
+  .home-details .home-date-loc {
+    grid-template-columns: 1fr 1px 1fr;
+    width: 100%;
+  }
+
+  .home-details .home-date {
+    text-align: right;
+  }
+
+  .home-details .home-loc {
+    text-align: left;
   }
 
   .home-rsvp-wrap {
@@ -428,6 +442,8 @@ a:hover {
     justify-content: center;
     padding-top: 0.25rem;
     margin-top: 0;
+    position: relative;
+    z-index: 2;
   }
 }
 
@@ -622,6 +638,20 @@ main p {
   margin-top: auto;
   padding: 1rem 1rem 1.5rem;
   min-height: 1px;
+  overflow: visible;
+}
+
+@media (max-width: 700px) {
+  .site-footer .dragonfly-tracker {
+    bottom: auto;
+    top: 0;
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+  }
+
+  .site-footer {
+    padding-top: 4.5rem;
+  }
 }
 
 .site-footer p {
