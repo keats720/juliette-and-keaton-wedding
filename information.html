@@ -5,54 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Information — Juliette & Keaton</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
 </head>
 <body>
-  <header class="page-hero">
-    <p class="hero-names">Juliette & Keaton</p>
-    <p class="hero-meta">SATURDAY, JULY 18, 2026 · CINNABAR VALLEY, NANAIMO BC</p>
-    <p id="countdown" class="countdown"></p>
-  </header>
-
   <nav class="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="information.html">Information</a></li>
       <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="accommodation.html">Accommodation</a></li>
-      <li><a href="dress-code.html">Dress Code</a></li>
+      <li><a href="dress-code.html">Attire</a></li>
       <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
     </ul>
   </nav>
 
   <main>
-    <h2>Venue & address</h2>
-    <p>
-      <strong>1980 Richardson Road</strong><br>
-      Cinnabar Valley<br>
-      Nanaimo, BC
-    </p>
+    <div class="page-title">
+      <h1>Details<br><span class="title-script">of the</span> Day</h1>
+    </div>
 
-    <h2>Start time</h2>
-    <p>The ceremony begins at <strong>3:00 PM</strong>. Please plan to arrive by <strong>2:30 PM</strong> so we can start on time.</p>
+    <div class="event-block">
+      <div class="event-name">Venue &amp; Address</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">1980 Richardson Road</div>
+        <div class="event-time">Cinnabar Valley, Nanaimo, BC</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">The ceremony and reception will both take place at this location.</div>
+    </div>
 
-    <h2>Getting there</h2>
-    <p>If you’re staying at our hotel block at the Coast Bastion Hotel in Nanaimo, a shuttle will be provided for pickup and drop-off. See the <a href="accommodation.html">Accommodation</a> page for details.</p>
+    <div class="event-block">
+      <div class="event-name">Accommodation</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Coast Bastion Hotel</div>
+        <div class="event-time">Nanaimo, BC</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">We have a block of rooms reserved at the Coast Bastion Hotel. More details on booking to come.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Getting There</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Shuttle &amp; Parking</div>
+        <div class="event-time">To &amp; From the Venue</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">A shuttle service will be provided to and from the Coast Bastion Hotel. If you're staying elsewhere, there will be plenty of parking available on site.</div>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <p class="footer-label">Celebrating Juliette & Keaton</p>
+    <!-- Dragonfly injected by js/dragonfly.js -->
   </footer>
 
-  <script>
-    (function() {
-      var d = new Date(2026, 6, 18);
-      var now = new Date();
-      var diff = d - now;
-      var days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-      var el = document.getElementById('countdown');
-      if (el) el.textContent = days === 0 ? "Today's the day!" : days + ' DAYS TO GO';
-    })();
-  </script>
   <script src="js/dragonfly.js"></script>
 </body>
 </html>

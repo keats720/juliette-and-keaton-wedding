@@ -5,44 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dress Code — Juliette & Keaton</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
 </head>
 <body>
-  <header class="page-hero">
-    <p class="hero-names">Juliette & Keaton</p>
-    <p class="hero-meta">SATURDAY, JULY 18, 2026 · CINNABAR VALLEY, NANAIMO BC</p>
-    <p id="countdown" class="countdown"></p>
-  </header>
-
   <nav class="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="information.html">Information</a></li>
       <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="accommodation.html">Accommodation</a></li>
-      <li><a href="dress-code.html">Dress Code</a></li>
+      <li><a href="dress-code.html">Attire</a></li>
       <li><a href="https://example.com/registry" target="_blank" rel="noopener">Registry</a></li>
     </ul>
   </nav>
 
   <main>
-    <h2>Overall theme</h2>
-    <p>Details to come — we’ll fill this in later with the dress code and overall vibe for the day.</p>
+    <div class="page-title">
+      <h1>What<br><span class="title-script">to</span> Wear</h1>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Dress Code</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Semi-Formal</div>
+        <div class="event-time">Details Coming Soon</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">We'll share more details on the overall vibe soon.</div>
+    </div>
+
+    <div class="event-block">
+      <div class="event-name">Footwear Note</div>
+      <div class="event-info">
+        <div class="event-date-line"></div>
+        <div class="event-date">Outdoor Ceremony</div>
+        <div class="event-time">&amp; Reception</div>
+        <div class="event-date-line"></div>
+      </div>
+      <div class="event-description">The ceremony and reception will both take place in a field — please keep this in mind when choosing your footwear.</div>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <p class="footer-label">Celebrating Juliette & Keaton</p>
+    <!-- Dragonfly injected by js/dragonfly.js -->
   </footer>
 
-  <script>
-    (function() {
-      var d = new Date(2026, 6, 18);
-      var now = new Date();
-      var diff = d - now;
-      var days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-      var el = document.getElementById('countdown');
-      if (el) el.textContent = days === 0 ? "Today's the day!" : days + ' DAYS TO GO';
-    })();
-  </script>
   <script src="js/dragonfly.js"></script>
 </body>
 </html>
