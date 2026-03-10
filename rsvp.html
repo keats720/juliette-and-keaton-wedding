@@ -479,8 +479,8 @@
 
         <div id="msg" class="rsvp-message"></div>
 
-        <!-- Step 1: Code entry (hidden for testing) -->
-        <div id="lookup-section" style="display:none;">
+        <!-- Step 1: Code entry -->
+        <div id="lookup-section">
           <div class="field-group">
             <label for="rsvp-code">Your RSVP Code</label>
             <div class="lookup-group">
@@ -531,14 +531,6 @@
     const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish'];
 
     let partyGuests = [];
-
-    // TEST MODE
-    partyGuests = [
-    { id: 'test-2', name: 'Markus Desvaux', email: '', hasPlusOne: true, previousRsvp: null },
-    { id: 'test-1', name: 'Keaton Heisterman', email: 'jane@example.com', hasPlusOne: false, previousRsvp: null },
-    ];
-    renderGuests();
-    document.getElementById('rsvp-fields').classList.add('visible');
 
     (function autoFillFromUrl() {
       const params = new URLSearchParams(window.location.search);
