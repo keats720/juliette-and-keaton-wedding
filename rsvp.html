@@ -642,7 +642,7 @@
               <label for="g${i}-po-name">Guest Name</label>
               <input type="text" id="g${i}-po-name" placeholder="Full name">
             </div>`;
-          html += buildDietaryHtml(`g${i}-po-diet`, 'Their Dietary Requirements');
+          html += buildDietaryHtml(`g${i}-po-diet`, 'Their Dietary Restrictions');
           html += `</div>`;
         }
 
@@ -654,7 +654,7 @@
     }
 
     function buildDietaryHtml(prefix, labelText) {
-      labelText = labelText || 'Dietary Requirements';
+      labelText = labelText || 'Dietary Restrictions';
       let html = `<div class="field-group">
         <label>${escHtml(labelText)}</label>
         <div class="checkbox-group">`;
