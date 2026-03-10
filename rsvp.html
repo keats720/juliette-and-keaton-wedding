@@ -279,6 +279,30 @@
       display: block;
     }
 
+    .guest-section {
+      position: relative;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--btn-border);
+      animation: rsvp-fadeIn 0.4s ease;
+    }
+
+    .guest-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .guest-section-name {
+      font-family: var(--font-loop);
+      font-weight: 400;
+      font-size: 1.4rem;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      padding: 0.4rem 0.4rem;
+    }
+
     .plus-one-section {
       display: none;
       margin-top: 1.5rem;
@@ -294,7 +318,7 @@
     .section-label {
       font-family: var(--font-loop);
       font-weight: 400;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--text);
       margin-bottom: 1.25rem;
     }
@@ -332,18 +356,16 @@
       border: 1px solid var(--btn-border);
     }
 
-    .guest-name-display {
-      font-family: var(--font-loop);
-      font-size: 1.6rem;
-      text-align: center;
-      margin-bottom: 1.75rem;
-      color: var(--text);
-    }
-
     .rsvp-divider {
       height: 1px;
       background: var(--btn-border);
       margin: 2rem 0;
+    }
+
+    .shared-fields {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--btn-border);
     }
 
     .success-screen {
@@ -398,6 +420,23 @@
       border-top-color: var(--text);
     }
 
+    .rsvp-back-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-tenor);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 1rem;
+      transition: color 0.2s;
+    }
+
+    .rsvp-back-btn:hover {
+      color: var(--text);
+    }
+
     @keyframes rsvp-spin {
       to { transform: rotate(360deg); }
     }
@@ -440,8 +479,8 @@
 
         <div id="msg" class="rsvp-message"></div>
 
-        <!-- Step 1: Code entry -->
-        <div id="lookup-section">
+        <!-- Step 1: Code entry (hidden for testing) -->
+        <div id="lookup-section" style="display:none;">
           <div class="field-group">
             <label for="rsvp-code">Your RSVP Code</label>
             <div class="lookup-group">
@@ -451,115 +490,26 @@
           </div>
         </div>
 
-        <!-- Step 2: RSVP form -->
+        <!-- Step 2: RSVP form (dynamically populated) -->
         <div id="rsvp-fields" class="rsvp-fields">
-          <div class="guest-name-display" id="guest-greeting"></div>
+          <button class="rsvp-back-btn" onclick="goBack()">&larr; Back</button>
+          <div id="guests-container"></div>
 
-          <div class="field-group">
-            <label for="guest-name">Your Name</label>
-            <input type="text" id="guest-name" placeholder="Full name">
-          </div>
-
-          <div class="field-group">
-            <label for="guest-email">Email Address</label>
-            <input type="email" id="guest-email" placeholder="your@email.com">
-          </div>
-
-          <div class="field-group">
-            <label>Will you be attending?</label>
-            <div class="radio-group">
-              <label class="radio-option">
-                <input type="radio" name="attending" value="yes" onchange="onAttendingChange()">
-                <span>Joyfully accepts</span>
-              </label>
-              <label class="radio-option">
-                <input type="radio" name="attending" value="no" onchange="onAttendingChange()">
-                <span>Respectfully declines</span>
-              </label>
+          <div class="shared-fields">
+            <div class="field-group">
+              <label for="song">Song Request</label>
+              <input type="text" id="song" placeholder="Get us on the dance floor with...">
             </div>
-          </div>
-
-          <div id="attending-details" style="display:none;">
 
             <div class="field-group">
-              <label>Dietary Requirements</label>
-              <div class="checkbox-group">
-                <label class="checkbox-option">
-                  <input type="checkbox" name="dietary" value="Vegetarian" onchange="onDietaryChange('dietary')">
-                  <span>Vegetarian</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="dietary" value="Vegan" onchange="onDietaryChange('dietary')">
-                  <span>Vegan</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="dietary" value="Gluten Free" onchange="onDietaryChange('dietary')">
-                  <span>Gluten Free</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="dietary" value="Shellfish" onchange="onDietaryChange('dietary')">
-                  <span>Shellfish</span>
-                </label>
-                <label class="checkbox-option">
-                  <input type="checkbox" name="dietary" value="Other" onchange="onDietaryChange('dietary')">
-                  <span>Other</span>
-                </label>
-              </div>
-              <div id="dietary-other-wrap" class="other-text-wrap">
-                <input type="text" id="dietary-other" placeholder="Please specify...">
-              </div>
+              <label for="notes">Notes</label>
+              <textarea id="notes" placeholder="Anything else you'd like us to know"></textarea>
             </div>
 
-            <div id="plus-one-section" class="plus-one-section">
-              <p class="section-label">Your Plus One</p>
-              <div class="field-group">
-                <label for="plus-one-name">Guest Name</label>
-                <input type="text" id="plus-one-name" placeholder="Full name">
-              </div>
-              <div class="field-group">
-                <label>Their Dietary Requirements</label>
-                <div class="checkbox-group">
-                  <label class="checkbox-option">
-                    <input type="checkbox" name="po-dietary" value="Vegetarian" onchange="onDietaryChange('po-dietary')">
-                    <span>Vegetarian</span>
-                  </label>
-                  <label class="checkbox-option">
-                    <input type="checkbox" name="po-dietary" value="Vegan" onchange="onDietaryChange('po-dietary')">
-                    <span>Vegan</span>
-                  </label>
-                  <label class="checkbox-option">
-                    <input type="checkbox" name="po-dietary" value="Gluten Free" onchange="onDietaryChange('po-dietary')">
-                    <span>Gluten Free</span>
-                  </label>
-                  <label class="checkbox-option">
-                    <input type="checkbox" name="po-dietary" value="Shellfish" onchange="onDietaryChange('po-dietary')">
-                    <span>Shellfish</span>
-                  </label>
-                  <label class="checkbox-option">
-                    <input type="checkbox" name="po-dietary" value="Other" onchange="onDietaryChange('po-dietary')">
-                    <span>Other</span>
-                  </label>
-                </div>
-                <div id="po-dietary-other-wrap" class="other-text-wrap">
-                  <input type="text" id="po-dietary-other" placeholder="Please specify...">
-                </div>
-              </div>
-            </div>
+            <button class="rsvp-btn rsvp-btn-primary rsvp-btn-full" id="submit-btn" onclick="submitRsvp()">
+              Submit
+            </button>
           </div>
-
-          <div class="field-group">
-            <label for="song">Song Request</label>
-            <input type="text" id="song" placeholder="Get us on the dance floor with...">
-          </div>
-
-          <div class="field-group">
-            <label for="notes">Notes</label>
-            <textarea id="notes" placeholder="Anything else you'd like us to know"></textarea>
-          </div>
-
-          <button class="rsvp-btn rsvp-btn-primary rsvp-btn-full" id="submit-btn" onclick="submitRsvp()">
-            Send RSVP
-          </button>
         </div>
 
         <!-- Step 3: Success -->
@@ -573,15 +523,22 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <!-- Dragonfly injected by js/dragonfly.js -->
-  </footer>
+  <footer class="site-footer"></footer>
 
   <script src="js/dragonfly.js"></script>
   <script>
     const API_BASE = 'https://wedding-rsvp.keaton-d8b.workers.dev';
+    const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish'];
 
-    let currentGuest = null;
+    let partyGuests = [];
+
+    // TEST MODE
+    partyGuests = [
+    { id: 'test-2', name: 'Markus Desvaux', email: '', hasPlusOne: true, previousRsvp: null },
+    { id: 'test-1', name: 'Keaton Heisterman', email: 'jane@example.com', hasPlusOne: false, previousRsvp: null },
+    ];
+    renderGuests();
+    document.getElementById('rsvp-fields').classList.add('visible');
 
     (function autoFillFromUrl() {
       const params = new URLSearchParams(window.location.search);
@@ -590,6 +547,8 @@
         document.getElementById('rsvp-code').value = code;
       }
     })();
+
+    // ── Lookup ──────────────────────────────────────────────
 
     async function lookupGuest() {
       const code = document.getElementById('rsvp-code').value.trim();
@@ -610,7 +569,7 @@
 
         const data = await res.json();
 
-        if (!res.ok || !data.guest) {
+        if (!res.ok || !data.guests || data.guests.length === 0) {
           showMessage(
             "We couldn't find that code. Please check the code from your invitation email and try again.",
             'error'
@@ -619,25 +578,19 @@
           return;
         }
 
-        currentGuest = data.guest;
+        partyGuests = data.guests;
+        renderGuests();
 
         document.getElementById('lookup-section').style.display = 'none';
         document.getElementById('rsvp-fields').classList.add('visible');
-        document.getElementById('guest-greeting').textContent = currentGuest.name;
-        document.getElementById('guest-name').value = currentGuest.name;
-        if (currentGuest.email) {
-          document.getElementById('guest-email').value = currentGuest.email;
-        }
 
-        if (currentGuest.hasPlusOne) {
-          document.getElementById('plus-one-section').classList.add('visible');
+        const hasPrevious = partyGuests.some(g => g.previousRsvp);
+        if (hasPrevious) {
+          prefillAll();
+          showMessage('We found your previous RSVP — feel free to update it.', 'info');
+        } else {
+          hideMessage();
         }
-
-        if (currentGuest.previousRsvp) {
-          prefillForm(currentGuest.previousRsvp);
-        }
-
-        hideMessage();
       } catch (err) {
         console.error(err);
         showMessage('Something went wrong. Please try again.', 'error');
@@ -650,65 +603,154 @@
       if (e.key === 'Enter') lookupGuest();
     });
 
-    function onAttendingChange() {
-      const val = document.querySelector('input[name="attending"]:checked')?.value;
-      const details = document.getElementById('attending-details');
-      details.style.display = val === 'yes' ? 'block' : 'none';
+    // ── Render guest sections ───────────────────────────────
+
+    function renderGuests() {
+      const container = document.getElementById('guests-container');
+      container.innerHTML = '';
+
+      partyGuests.forEach((guest, i) => {
+        const section = document.createElement('div');
+        section.className = 'guest-section';
+        section.dataset.idx = i;
+
+        let html = `<p class="guest-section-name">${escHtml(guest.name || 'Guest ' + (i + 1))}</p>`;
+
+        html += `<div class="field-group">
+          <label for="g${i}-name">Name</label>
+          <input type="text" id="g${i}-name" value="${escAttr(guest.name)}" placeholder="Full name">
+        </div>`;
+
+        html += `<div class="field-group">
+          <label for="g${i}-email">Email Address</label>
+          <input type="email" id="g${i}-email" value="${escAttr(guest.email)}" placeholder="your@email.com">
+        </div>`;
+
+        html += `<div class="field-group">
+          <label>Will ${partyGuests.length > 1 ? escHtml(guest.name.split(' ')[0] || 'they') : 'you'} be attending?</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="g${i}-attending" value="yes" onchange="onAttendingChange(${i})">
+              <span>Joyfully accepts</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="g${i}-attending" value="no" onchange="onAttendingChange(${i})">
+              <span>Respectfully declines</span>
+            </label>
+          </div>
+        </div>`;
+
+        html += `<div id="g${i}-details" style="display:none;">`;
+        html += buildDietaryHtml(`g${i}-diet`);
+
+        if (guest.hasPlusOne) {
+          html += `<div id="g${i}-plusone" class="plus-one-section visible">
+            <p class="section-label">Plus One</p>
+            <div class="field-group">
+              <label for="g${i}-po-name">Guest Name</label>
+              <input type="text" id="g${i}-po-name" placeholder="Full name">
+            </div>`;
+          html += buildDietaryHtml(`g${i}-po-diet`, 'Their Dietary Requirements');
+          html += `</div>`;
+        }
+
+        html += `</div>`;
+
+        section.innerHTML = html;
+        container.appendChild(section);
+      });
     }
 
-    function onDietaryChange(groupName) {
-      const otherChecked = document.querySelector(`input[name="${groupName}"][value="Other"]`)?.checked;
-      const wrapId = groupName === 'dietary' ? 'dietary-other-wrap' : 'po-dietary-other-wrap';
-      const wrap = document.getElementById(wrapId);
-      if (otherChecked) {
-        wrap.classList.add('visible');
-      } else {
-        wrap.classList.remove('visible');
-      }
+    function buildDietaryHtml(prefix, labelText) {
+      labelText = labelText || 'Dietary Requirements';
+      let html = `<div class="field-group">
+        <label>${escHtml(labelText)}</label>
+        <div class="checkbox-group">`;
+
+      DIETARY_OPTIONS.forEach(opt => {
+        html += `<label class="checkbox-option">
+          <input type="checkbox" name="${prefix}" value="${opt}" onchange="onDietaryChange('${prefix}')">
+          <span>${opt}</span>
+        </label>`;
+      });
+
+      html += `<label class="checkbox-option">
+          <input type="checkbox" name="${prefix}" value="Other" onchange="onDietaryChange('${prefix}')">
+          <span>Other</span>
+        </label>
+        </div>
+        <div id="${prefix}-other-wrap" class="other-text-wrap">
+          <input type="text" id="${prefix}-other" placeholder="Please specify...">
+        </div>
+      </div>`;
+
+      return html;
     }
 
-    function collectDietary(groupName) {
-      const checked = Array.from(document.querySelectorAll(`input[name="${groupName}"]:checked`))
+    // ── Interactions ────────────────────────────────────────
+
+    function onAttendingChange(idx) {
+      const val = document.querySelector(`input[name="g${idx}-attending"]:checked`)?.value;
+      document.getElementById(`g${idx}-details`).style.display = val === 'yes' ? 'block' : 'none';
+    }
+
+    function onDietaryChange(prefix) {
+      const otherChecked = document.querySelector(`input[name="${prefix}"][value="Other"]`)?.checked;
+      const wrap = document.getElementById(`${prefix}-other-wrap`);
+      if (otherChecked) wrap.classList.add('visible');
+      else wrap.classList.remove('visible');
+    }
+
+    function collectDietary(prefix) {
+      const checked = Array.from(document.querySelectorAll(`input[name="${prefix}"]:checked`))
         .map(cb => cb.value)
         .filter(v => v !== 'Other');
 
-      const otherChecked = document.querySelector(`input[name="${groupName}"][value="Other"]`)?.checked;
+      const otherChecked = document.querySelector(`input[name="${prefix}"][value="Other"]`)?.checked;
       if (otherChecked) {
-        const otherId = groupName === 'dietary' ? 'dietary-other' : 'po-dietary-other';
-        const otherText = document.getElementById(otherId).value.trim();
-        if (otherText) {
-          checked.push('Other: ' + otherText);
-        } else {
-          checked.push('Other');
-        }
+        const otherText = document.getElementById(`${prefix}-other`).value.trim();
+        checked.push(otherText ? 'Other: ' + otherText : 'Other');
       }
 
       return checked.join(', ');
     }
 
+    // ── Submit ──────────────────────────────────────────────
+
     async function submitRsvp() {
-      const attending = document.querySelector('input[name="attending"]:checked')?.value;
-      if (!attending) {
-        showMessage('Please let us know if you can make it.', 'error');
-        return;
+      const guestPayloads = [];
+
+      for (let i = 0; i < partyGuests.length; i++) {
+        const attending = document.querySelector(`input[name="g${i}-attending"]:checked`)?.value;
+        if (!attending) {
+          const name = partyGuests[i].name.split(' ')[0] || 'Guest ' + (i + 1);
+          showMessage(`Please let us know if ${name} can make it.`, 'error');
+          return;
+        }
+
+        const entry = {
+          guestId: partyGuests[i].id,
+          attending: attending === 'yes',
+          name: document.getElementById(`g${i}-name`).value.trim(),
+          email: document.getElementById(`g${i}-email`).value.trim(),
+          dietary: collectDietary(`g${i}-diet`),
+        };
+
+        if (partyGuests[i].hasPlusOne && attending === 'yes') {
+          entry.plusOneName = document.getElementById(`g${i}-po-name`).value.trim();
+          entry.plusOneDietary = collectDietary(`g${i}-po-diet`);
+        }
+
+        guestPayloads.push(entry);
       }
 
       setLoading('submit-btn', true);
 
       const payload = {
-        guestId: currentGuest.id,
-        attending: attending === 'yes',
-        name: document.getElementById('guest-name').value.trim(),
-        email: document.getElementById('guest-email').value.trim(),
-        dietary: collectDietary('dietary'),
+        guests: guestPayloads,
         songRequest: document.getElementById('song').value.trim(),
         notes: document.getElementById('notes').value.trim(),
       };
-
-      if (currentGuest.hasPlusOne && attending === 'yes') {
-        payload.plusOneName = document.getElementById('plus-one-name').value.trim();
-        payload.plusOneDietary = collectDietary('po-dietary');
-      }
 
       try {
         const res = await fetch(`${API_BASE}/submit`, {
@@ -721,8 +763,10 @@
 
         document.getElementById('rsvp-fields').classList.remove('visible');
         document.getElementById('success-screen').classList.add('visible');
+
+        const anyAttending = guestPayloads.some(g => g.attending);
         document.getElementById('success-message').textContent =
-          attending === 'yes'
+          anyAttending
             ? "We can't wait to celebrate with you!"
             : "We'll miss you, but thank you for letting us know.";
 
@@ -734,40 +778,63 @@
       setLoading('submit-btn', false);
     }
 
-    function prefillForm(rsvp) {
-      if (rsvp.attending !== undefined) {
-        const radio = document.querySelector(`input[name="attending"][value="${rsvp.attending ? 'yes' : 'no'}"]`);
-        if (radio) { radio.checked = true; onAttendingChange(); }
-      }
-      if (rsvp.dietary) prefillDietary('dietary', rsvp.dietary);
-      if (rsvp.songRequest) document.getElementById('song').value = rsvp.songRequest;
-      if (rsvp.notes) document.getElementById('notes').value = rsvp.notes;
-      if (rsvp.plusOneName) document.getElementById('plus-one-name').value = rsvp.plusOneName;
-      if (rsvp.plusOneDietary) prefillDietary('po-dietary', rsvp.plusOneDietary);
+    // ── Prefill from previous RSVP ─────────────────────────
 
-      showMessage('We found your previous RSVP — feel free to update it.', 'info');
+    function prefillAll() {
+      let sharedPrefilled = false;
+
+      partyGuests.forEach((guest, i) => {
+        const rsvp = guest.previousRsvp;
+        if (!rsvp) return;
+
+        if (rsvp.attending !== undefined) {
+          const radio = document.querySelector(`input[name="g${i}-attending"][value="${rsvp.attending ? 'yes' : 'no'}"]`);
+          if (radio) { radio.checked = true; onAttendingChange(i); }
+        }
+
+        if (rsvp.dietary) prefillDietary(`g${i}-diet`, rsvp.dietary);
+        if (rsvp.plusOneName) document.getElementById(`g${i}-po-name`).value = rsvp.plusOneName;
+        if (rsvp.plusOneDietary) prefillDietary(`g${i}-po-diet`, rsvp.plusOneDietary);
+
+        if (!sharedPrefilled) {
+          if (rsvp.songRequest) document.getElementById('song').value = rsvp.songRequest;
+          if (rsvp.notes) document.getElementById('notes').value = rsvp.notes;
+          sharedPrefilled = true;
+        }
+      });
     }
 
-    function prefillDietary(groupName, value) {
+    function prefillDietary(prefix, value) {
       const items = value.split(', ');
-      const standardOptions = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish'];
-
       items.forEach(item => {
-        const match = standardOptions.find(opt => item === opt);
+        const match = DIETARY_OPTIONS.find(opt => item === opt);
         if (match) {
-          const cb = document.querySelector(`input[name="${groupName}"][value="${match}"]`);
+          const cb = document.querySelector(`input[name="${prefix}"][value="${match}"]`);
           if (cb) cb.checked = true;
         } else if (item.startsWith('Other: ') || item === 'Other') {
-          const cb = document.querySelector(`input[name="${groupName}"][value="Other"]`);
+          const cb = document.querySelector(`input[name="${prefix}"][value="Other"]`);
           if (cb) cb.checked = true;
-          onDietaryChange(groupName);
+          onDietaryChange(prefix);
           if (item.startsWith('Other: ')) {
-            const otherId = groupName === 'dietary' ? 'dietary-other' : 'po-dietary-other';
-            document.getElementById(otherId).value = item.replace('Other: ', '');
+            document.getElementById(`${prefix}-other`).value = item.replace('Other: ', '');
           }
         }
       });
     }
+
+    // ── Navigation ──────────────────────────────────────────
+
+    function goBack() {
+      partyGuests = [];
+      document.getElementById('guests-container').innerHTML = '';
+      document.getElementById('rsvp-fields').classList.remove('visible');
+      document.getElementById('lookup-section').style.display = '';
+      document.getElementById('song').value = '';
+      document.getElementById('notes').value = '';
+      hideMessage();
+    }
+
+    // ── Utilities ───────────────────────────────────────────
 
     function showMessage(text, type) {
       const el = document.getElementById('msg');
@@ -789,6 +856,16 @@
         btn.disabled = false;
         if (btn._origHTML) btn.innerHTML = btn._origHTML;
       }
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function escAttr(s) {
+      return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
   </script>
 </body>
