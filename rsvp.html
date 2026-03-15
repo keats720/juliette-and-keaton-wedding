@@ -525,6 +525,7 @@
 
   <footer class="site-footer"></footer>
 
+  <script src="js/rsvp-code.js"></script>
   <script src="js/dragonfly.js"></script>
   <script>
     const API_BASE = 'https://wedding-rsvp.keaton-d8b.workers.dev';
@@ -537,6 +538,7 @@
       const code = params.get('code');
       if (code) {
         document.getElementById('rsvp-code').value = code;
+        lookupGuest();
       }
     })();
 
