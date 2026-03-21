@@ -87,7 +87,7 @@ a:hover {
 
 .site-nav a {
   font-family: var(--font-tenor);
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -470,7 +470,7 @@ main p {
 
 /* Inner page title — mixed-font display heading */
 .page-title {
-  padding: 3rem 2rem 1.5rem;
+  padding: 2rem 2rem 0.75rem;
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -499,8 +499,8 @@ main p {
   display: grid;
   grid-template-columns: 5fr 4fr;
   grid-template-rows: auto auto;
-  gap: 0.5rem 2rem;
-  padding: 1.5rem 2rem;
+  gap: 0.25rem 2rem;
+  padding: 0.75rem 2rem;
   max-width: 1000px;
   margin: 0 auto;
   align-items: start;
@@ -565,6 +565,91 @@ main p {
   line-height: 1.6;
 }
 
+.back-link-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.text-accent {
+  color: #1a5ab8;
+}
+
+.link-accent {
+  color: #1a5ab8 !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link-accent:hover {
+  color: var(--text-muted) !important;
+}
+
+.event-address {
+  grid-column: 1;
+  grid-row: 3;
+  font-family: var(--font-tenor);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Full-width event block variant (no right-side info column) */
+.event-block--full {
+  grid-template-columns: 1fr;
+}
+
+.event-block--full .event-name {
+  grid-column: 1;
+}
+
+.event-block--full .event-description {
+  grid-column: 1;
+}
+
+/* Accommodation two-cell row */
+.accommodation-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+.accommodation-cell-title {
+  font-family: var(--font-newicon);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.accommodation-cell-body {
+  font-family: var(--font-tenor);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.accommodation-cell-body p {
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  line-height: inherit;
+  margin: 0 0 0.5rem;
+}
+
+.accommodation-cell-body p:last-child {
+  margin-bottom: 0;
+}
+
 @media (max-width: 600px) {
   .page-title {
     padding: 2rem 1.5rem 1rem;
@@ -574,6 +659,11 @@ main p {
     grid-template-columns: 1fr;
     gap: 0.5rem;
     padding: 1.25rem 1.5rem;
+  }
+
+  .accommodation-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .event-name {
@@ -592,9 +682,187 @@ main p {
     grid-row: 3;
   }
 
+  .event-block--full .event-description {
+    grid-row: 2;
+  }
+
+  .event-address {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .event-block--full .event-address {
+    grid-row: 3;
+  }
+
   .event-date,
   .event-time {
     text-align: left;
+  }
+}
+
+/* Registry page */
+.registry-blurb {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 4rem 2rem;
+  text-align: center;
+}
+
+.registry-blurb p {
+  font-family: var(--font-tenor);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+}
+
+.registry-blurb p:last-child {
+  margin-bottom: 0;
+}
+
+.registry-blurb strong {
+  font-weight: 700;
+  color: #1a5ab8;
+}
+
+.registry-buttons {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.registry-buttons .btn {
+  min-width: 340px;
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 0.9rem 2rem;
+}
+
+.registry-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.registry-secondary .btn {
+  min-width: 280px;
+  text-align: center;
+}
+
+.registry-sub-text {
+  font-family: var(--font-tenor);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+/* Honeymoon fund page */
+.honeymoon-details {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.honeymoon-card {
+  background: rgba(213, 226, 240, 0.6);
+  border: 1px solid var(--btn-border);
+  border-radius: 4px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+.honeymoon-label {
+  font-family: var(--font-tenor);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.honeymoon-email {
+  font-family: var(--font-newicon);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  word-break: break-all;
+}
+
+.honeymoon-note {
+  font-family: var(--font-tenor);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.honeymoon-note strong {
+  color: var(--text);
+}
+
+
+.honeymoon-disclaimer {
+  font-family: var(--font-tenor);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.7;
+  margin-top: -1rem;
+}
+
+.honeymoon-contact {
+  font-family: var(--font-tenor);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.honeymoon-contact a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.honeymoon-contact a:hover {
+  color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .registry-blurb {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  .registry-buttons {
+    padding: 1rem 1.5rem 2.5rem;
+  }
+
+  .honeymoon-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .honeymoon-details {
+    padding: 0 1.5rem 2.5rem;
   }
 }
 
@@ -630,6 +898,21 @@ main p {
   padding: 0.8rem 1.9rem;
   border-radius: 6px;
   letter-spacing: 0.15em;
+}
+
+/* Countdown banner */
+.countdown-banner {
+  text-align: center;
+  font-family: var(--font-tenor);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--btn-text);
+  background: #d5e2f0;
+  padding: 1rem 1rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
 }
 
 /* Footer — minimal, for dragonfly only */

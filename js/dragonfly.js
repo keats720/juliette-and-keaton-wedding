@@ -2,6 +2,20 @@
   var footer = document.querySelector('.site-footer');
   if (!footer) return;
 
+  var isHome = document.querySelector('.home-page');
+  if (isHome) {
+    var weddingDate = new Date('2026-07-18T15:00:00');
+    var now = new Date();
+    var diff = weddingDate - now;
+    var daysToGo = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    if (daysToGo > 0) {
+      var banner = document.createElement('div');
+      banner.className = 'countdown-banner';
+      banner.textContent = daysToGo + ' days to go';
+      footer.insertBefore(banner, footer.firstChild);
+    }
+  }
+
   var wrap = document.createElement('div');
   wrap.className = 'dragonfly-tracker';
   wrap.setAttribute('aria-hidden', 'true');
