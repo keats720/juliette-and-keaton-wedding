@@ -511,7 +511,7 @@ main p {
   font-size: clamp(1.4rem, 3.5vw, 2.2rem);
   font-weight: 400;
   text-transform: uppercase;
-  color: var(--text);
+  color: #1a5ab8;
   letter-spacing: 0.04em;
   line-height: 1.15;
   grid-column: 1;
@@ -558,9 +558,9 @@ main p {
   grid-column: 1;
   grid-row: 2;
   font-family: var(--font-tenor);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--text);
   line-height: 1.6;
 }
@@ -590,9 +590,9 @@ main p {
   grid-column: 1;
   grid-row: 3;
   font-family: var(--font-tenor);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--text);
   line-height: 1.6;
 }
@@ -608,6 +608,29 @@ main p {
 
 .event-block--full .event-description {
   grid-column: 1;
+}
+
+/* Accommodation hero — background image with blue overlay */
+.accommodation-hero {
+  position: relative;
+  background: #cadcee;
+  padding: 2rem 0;
+}
+
+.accommodation-hero .event-block {
+  position: relative;
+  z-index: 1;
+}
+
+/* Extra spacing on venue and getting-there blocks around accommodation hero */
+.event-block--venue {
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.event-block--getting-there {
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
 }
 
 /* Accommodation two-cell row */
@@ -631,9 +654,9 @@ main p {
 
 .accommodation-cell-body {
   font-family: var(--font-tenor);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--text);
   line-height: 1.6;
 }
@@ -669,7 +692,6 @@ main p {
   .event-name {
     grid-column: 1;
     grid-row: 1;
-    color: #1a5ab8;
   }
 
   .event-info {
@@ -701,6 +723,68 @@ main p {
   }
 }
 
+/* Attire page — single centered column */
+.attire-page {
+  padding: 0 0 2rem;
+}
+
+.attire-block {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.attire-name {
+  font-family: var(--font-newicon);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #1a5ab8;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.attire-code {
+  font-family: var(--font-tenor);
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 0.5rem 0;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.attire-code::before,
+.attire-code::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--text);
+  opacity: 0.55;
+}
+
+.attire-desc {
+  font-family: var(--font-tenor);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 600px) {
+  .attire-block {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
 /* Registry page */
 .registry-blurb {
   max-width: 1000px;
@@ -713,7 +797,7 @@ main p {
   font-family: var(--font-tenor);
   font-size: 1rem;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: none;
   line-height: 1.8;
   color: var(--text);
   margin: 0 0 0.75rem;

@@ -72,14 +72,21 @@
 
     .rsvp-subtitle {
       text-align: center;
-      font-family: var(--font-loop);
+      font-family: var(--font-tenor);
       font-size: 1.1rem;
       color: var(--text-muted);
       margin-bottom: 2.5rem;
     }
 
+    .script-cap {
+      font-family: var(--font-loop);
+      font-size: 1.4em;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-right: 0.03em;
+    }
+
     .rsvp-card label {
-      display: block;
       font-family: var(--font-tenor);
       font-size: 0.7rem;
       letter-spacing: 0.15em;
@@ -151,6 +158,13 @@
       font-family: var(--font-tenor);
       font-size: 0.85rem;
       color: var(--text);
+      line-height: 1;
+    }
+
+    .radio-option span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
     }
 
     .radio-option input[type="radio"] {
@@ -163,6 +177,8 @@
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      margin: 0;
+      padding: 0;
     }
 
     .radio-option input[type="radio"]:checked {
@@ -186,7 +202,11 @@
       font-family: var(--font-tenor);
       font-size: 0.8rem;
       color: var(--text);
+      line-height: 1;
+      padding: 0 0;
     }
+
+    
 
     .checkbox-option input[type="checkbox"] {
       appearance: none;
@@ -198,6 +218,8 @@
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      margin: 0;
+      padding: 0;
     }
 
     .checkbox-option input[type="checkbox"]:checked {
@@ -215,6 +237,14 @@
       border: solid white;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
+    }
+
+    .field-note {
+      font-family: var(--font-tenor);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0.25rem 0 0.5rem;
+      font-weight: 400;
     }
 
     .other-text-wrap {
@@ -294,13 +324,15 @@
     }
 
     .guest-section-name {
-      font-family: var(--font-loop);
-      font-weight: 400;
+      font-family: var(--font-newicon);
+      font-weight: 100;
       font-size: 1.4rem;
       line-height: 2;
       color: var(--text);
       margin-bottom: 0.75rem;
       padding: 0.4rem 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
     .plus-one-section {
@@ -497,6 +529,44 @@
 
           <div class="shared-fields">
             <div class="field-group">
+              <label>Accommodation Plan</label>
+              <p class="field-note">So that we can plan numbers for the shuttle service</p>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="accommodation" value="Coast Bastion Hotel">
+                  <span>Coast Bastion Hotel</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="accommodation" value="Saturday Night Camping">
+                  <span>Saturday Night Camping</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="accommodation" value="Other (taking shuttle)">
+                  <span>Other (taking shuttle)</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="accommodation" value="Other (not taking shuttle)">
+                  <span>Other (not taking shuttle)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Additional Events</label>
+              <p class="field-note">Please let us know if you plan on dropping in to either of these events</p>
+              <div class="checkbox-group">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="extra-events" value="Friday BBQ">
+                  <span>Friday BBQ (5:00 PM – 9:00 PM)</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="extra-events" value="Sunday Breakfast">
+                  <span>Sunday Brunch (10:00 AM – 12:00 PM)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-group">
               <label for="song">Song Request</label>
               <input type="text" id="song" placeholder="Get us on the dance floor with...">
             </div>
@@ -529,7 +599,7 @@
   <script src="js/dragonfly.js"></script>
   <script>
     const API_BASE = 'https://wedding-rsvp.keaton-d8b.workers.dev';
-    const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish'];
+    const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten Free', 'Shellfish', 'Lactose Intolerant'];
 
     let partyGuests = [];
 
@@ -554,41 +624,20 @@
       setLoading('lookup-btn', true);
       hideMessage();
 
-      try {
-        const res = await fetch(`${API_BASE}/lookup`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code })
-        });
+      // ── TEMP: bypass API with mock data ──
+      const mockData = {
+        guests: [
+          { id: '1', name: 'Keaton Heisterman', email: 'keaton@example.com', hasPlusOne: false },
+          { id: '2', name: 'Juliette Doe', email: 'juliette@example.com', hasPlusOne: true },
+        ]
+      };
 
-        const data = await res.json();
+      partyGuests = mockData.guests;
+      renderGuests();
 
-        if (!res.ok || !data.guests || data.guests.length === 0) {
-          showMessage(
-            "We couldn't find that code. Please check the code from your invitation email and try again.",
-            'error'
-          );
-          setLoading('lookup-btn', false);
-          return;
-        }
-
-        partyGuests = data.guests;
-        renderGuests();
-
-        document.getElementById('lookup-section').style.display = 'none';
-        document.getElementById('rsvp-fields').classList.add('visible');
-
-        const hasPrevious = partyGuests.some(g => g.previousRsvp);
-        if (hasPrevious) {
-          prefillAll();
-          showMessage('We found your previous RSVP — feel free to update it.', 'info');
-        } else {
-          hideMessage();
-        }
-      } catch (err) {
-        console.error(err);
-        showMessage('Something went wrong. Please try again.', 'error');
-      }
+      document.getElementById('lookup-section').style.display = 'none';
+      document.getElementById('rsvp-fields').classList.add('visible');
+      hideMessage();
 
       setLoading('lookup-btn', false);
     }
@@ -608,7 +657,7 @@
         section.className = 'guest-section';
         section.dataset.idx = i;
 
-        let html = `<p class="guest-section-name">${escHtml(guest.name || 'Guest ' + (i + 1))}</p>`;
+        let html = `<p class="guest-section-name">${scriptCapName(guest.name || 'Guest ' + (i + 1))}</p>`;
 
         html += `<div class="field-group">
           <label for="g${i}-name">Name</label>
@@ -740,34 +789,28 @@
 
       setLoading('submit-btn', true);
 
+      const accommodation = Array.from(document.querySelectorAll('input[name="accommodation"]:checked')).map(cb => cb.value);
+      const extraEvents = Array.from(document.querySelectorAll('input[name="extra-events"]:checked')).map(cb => cb.value);
+
       const payload = {
         guests: guestPayloads,
+        accommodation,
+        extraEvents,
         songRequest: document.getElementById('song').value.trim(),
         notes: document.getElementById('notes').value.trim(),
       };
 
-      try {
-        const res = await fetch(`${API_BASE}/submit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+      // ── TEMP: bypass API, just log and show success ──
+      console.log('RSVP payload:', payload);
 
-        if (!res.ok) throw new Error('Submit failed');
+      document.getElementById('rsvp-fields').classList.remove('visible');
+      document.getElementById('success-screen').classList.add('visible');
 
-        document.getElementById('rsvp-fields').classList.remove('visible');
-        document.getElementById('success-screen').classList.add('visible');
-
-        const anyAttending = guestPayloads.some(g => g.attending);
-        document.getElementById('success-message').textContent =
-          anyAttending
-            ? "We can't wait to celebrate with you!"
-            : "We'll miss you, but thank you for letting us know.";
-
-      } catch (err) {
-        console.error(err);
-        showMessage('Something went wrong submitting your RSVP. Please try again.', 'error');
-      }
+      const anyAttending = guestPayloads.some(g => g.attending);
+      document.getElementById('success-message').textContent =
+        anyAttending
+          ? "We can't wait to celebrate with you!"
+          : "We'll miss you, but thank you for letting us know.";
 
       setLoading('submit-btn', false);
     }
@@ -793,6 +836,8 @@
         if (!sharedPrefilled) {
           if (rsvp.songRequest) document.getElementById('song').value = rsvp.songRequest;
           if (rsvp.notes) document.getElementById('notes').value = rsvp.notes;
+          if (rsvp.accommodation) prefillCheckboxGroup('accommodation', rsvp.accommodation);
+          if (rsvp.extraEvents) prefillCheckboxGroup('extra-events', rsvp.extraEvents);
           sharedPrefilled = true;
         }
       });
@@ -816,6 +861,14 @@
       });
     }
 
+    function prefillCheckboxGroup(name, value) {
+      const items = value.split(', ');
+      items.forEach(item => {
+        const cb = document.querySelector(`input[name="${name}"][value="${item}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+
     // ── Navigation ──────────────────────────────────────────
 
     function goBack() {
@@ -825,6 +878,7 @@
       document.getElementById('lookup-section').style.display = '';
       document.getElementById('song').value = '';
       document.getElementById('notes').value = '';
+      document.querySelectorAll('input[name="accommodation"], input[name="extra-events"]').forEach(cb => cb.checked = false);
       hideMessage();
     }
 
@@ -856,6 +910,12 @@
       const d = document.createElement('div');
       d.textContent = s;
       return d.innerHTML;
+    }
+
+    function scriptCapName(name) {
+      return escHtml(name).split(' ').map(word =>
+        `<span class="script-cap">${word[0]}</span>${word.slice(1)}`
+      ).join(' ');
     }
 
     function escAttr(s) {
