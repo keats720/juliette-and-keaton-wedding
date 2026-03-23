@@ -625,20 +625,41 @@
       setLoading('lookup-btn', true);
       hideMessage();
 
-      // ── TEMP: bypass API with mock data ──
-      const mockData = {
-        guests: [
-          { id: '1', name: 'Keaton Heisterman', email: 'keaton@example.com', hasPlusOne: false },
-          { id: '2', name: 'Juliette Doe', email: 'juliette@example.com', hasPlusOne: true },
-        ]
-      };
+      try {
+        const res = await fetch(`${API_BASE}/lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code })
+        });
 
-      partyGuests = mockData.guests;
-      renderGuests();
+        const data = await res.json();
 
-      document.getElementById('lookup-section').style.display = 'none';
-      document.getElementById('rsvp-fields').classList.add('visible');
-      hideMessage();
+        if (!res.ok || !data.guests || data.guests.length === 0) {
+          showMessage(
+            "We couldn't find that code. Please check the code from your invitation email and try again.",
+            'error'
+          );
+          setLoading('lookup-btn', false);
+          return;
+        }
+
+        partyGuests = data.guests;
+        renderGuests();
+
+        document.getElementById('lookup-section').style.display = 'none';
+        document.getElementById('rsvp-fields').classList.add('visible');
+
+        const hasPrevious = partyGuests.some(g => g.previousRsvp);
+        if (hasPrevious) {
+          prefillAll();
+          showMessage('We found your previous RSVP — feel free to update it.', 'info');
+        } else {
+          hideMessage();
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong. Please try again.', 'error');
+      }
 
       setLoading('lookup-btn', false);
     }
@@ -801,17 +822,28 @@
         notes: document.getElementById('notes').value.trim(),
       };
 
-      // ── TEMP: bypass API, just log and show success ──
-      console.log('RSVP payload:', payload);
+      try {
+        const res = await fetch(`${API_BASE}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
-      document.getElementById('rsvp-fields').classList.remove('visible');
-      document.getElementById('success-screen').classList.add('visible');
+        if (!res.ok) throw new Error('Submit failed');
 
-      const anyAttending = guestPayloads.some(g => g.attending);
-      document.getElementById('success-message').textContent =
-        anyAttending
-          ? "We can't wait to celebrate with you!"
-          : "We'll miss you, but thank you for letting us know.";
+        document.getElementById('rsvp-fields').classList.remove('visible');
+        document.getElementById('success-screen').classList.add('visible');
+
+        const anyAttending = guestPayloads.some(g => g.attending);
+        document.getElementById('success-message').textContent =
+          anyAttending
+            ? "We can't wait to celebrate with you!"
+            : "We'll miss you, but thank you for letting us know.";
+
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong submitting your RSVP. Please try again.', 'error');
+      }
 
       setLoading('submit-btn', false);
     }
