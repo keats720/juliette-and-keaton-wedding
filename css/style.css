@@ -388,14 +388,10 @@ a:hover {
     padding: 2rem 1.5rem;
   }
 
-  .home-names,
-  .home-details {
-    align-items: center;
-  }
-
   .home-names {
     position: relative;
     z-index: 2;
+    align-items: center;
   }
 
   .home-floral {
