@@ -315,10 +315,12 @@ a:hover {
 
 .home-date {
   justify-self: end;
+  text-align: right;
 }
 
 .home-loc {
   justify-self: start;
+  text-align: left;
 }
 
 .home-date,
