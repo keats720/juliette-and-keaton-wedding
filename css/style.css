@@ -558,11 +558,11 @@ main p {
   grid-column: 1;
   grid-row: 2;
   font-family: var(--font-tenor);
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 0.12em;
   text-transform: none;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .back-link-wrap {
@@ -770,10 +770,10 @@ main p {
 
 .attire-desc {
   font-family: var(--font-tenor);
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 0.12em;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.8;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
