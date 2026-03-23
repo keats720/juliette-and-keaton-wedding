@@ -424,16 +424,17 @@ a:hover {
   }
 
   .home-details .home-date-loc {
-    grid-template-columns: 1fr 1px 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0 24px;
     width: 100%;
   }
 
   .home-details .home-date {
-    text-align: right;
+    justify-self: end;
   }
 
   .home-details .home-loc {
-    text-align: left;
+    justify-self: start;
   }
 
   .home-rsvp-wrap {
