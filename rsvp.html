@@ -582,6 +582,7 @@
             <button class="rsvp-btn rsvp-btn-primary rsvp-btn-full" id="submit-btn" onclick="submitRsvp()">
               Submit
             </button>
+            <div id="msg-bottom" class="rsvp-message" style="margin-top: 1rem; margin-bottom: 0;"></div>
             <p class="field-note" style="text-align: center; margin-top: 0.75rem;">You can come back and update your RSVP at any time.</p>
           </div>
         </div>
@@ -791,11 +792,13 @@
 
       for (let i = 0; i < partyGuests.length; i++) {
         const attending = document.querySelector(`input[name="g${i}-attending"]:checked`)?.value;
-        if (!attending) {
-          const name = partyGuests[i].name.split(' ')[0] || 'Guest ' + (i + 1);
-          showMessage(`Please let us know if ${name} can make it.`, 'error');
+
+        if (!attending && partyGuests.length === 1) {
+          showMessage('Please let us know if you can make it.', 'error');
           return;
         }
+
+        if (!attending) continue;
 
         const entry = {
           guestId: partyGuests[i].id,
@@ -811,6 +814,11 @@
         }
 
         guestPayloads.push(entry);
+      }
+
+      if (guestPayloads.length === 0) {
+        showMessage('Please respond for at least one guest.', 'error');
+        return;
       }
 
       setLoading('submit-btn', true);
@@ -924,13 +932,19 @@
     // ── Utilities ───────────────────────────────────────────
 
     function showMessage(text, type) {
-      const el = document.getElementById('msg');
-      el.textContent = text;
-      el.className = `rsvp-message visible ${type}`;
+      ['msg', 'msg-bottom'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = text;
+        el.className = `rsvp-message visible ${type}`;
+      });
     }
 
     function hideMessage() {
-      document.getElementById('msg').className = 'rsvp-message';
+      ['msg', 'msg-bottom'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'rsvp-message';
+      });
     }
 
     function setLoading(btnId, loading) {
