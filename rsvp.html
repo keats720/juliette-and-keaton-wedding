@@ -841,6 +841,7 @@
           anyAttending
             ? "We can't wait to celebrate with you!"
             : "We'll miss you, but thank you for letting us know.";
+        document.querySelector('.more-info').style.display = anyAttending ? '' : 'none';
 
       } catch (err) {
         console.error(err);
