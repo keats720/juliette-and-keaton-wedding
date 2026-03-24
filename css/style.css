@@ -100,39 +100,36 @@ a:hover {
   text-decoration: none;
 }
 
-/* Hamburger toggle — hidden on desktop */
+/* Menu toggle — hidden on desktop */
 .nav-toggle {
   display: none;
   background: none;
-  border: none;
+  border: 1px solid var(--btn-text);
+  border-radius: 4px;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.35rem 0.75rem;
   margin: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--btn-text);
+  letter-spacing: 0.05em;
+  transition: border-color 0.3s, color 0.3s;
 }
 
-.nav-toggle span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--btn-text);
-  border-radius: 1px;
-  transition: transform 0.3s, opacity 0.3s;
+.site-nav.open .nav-toggle {
+  border-color: transparent;
 }
 
-.nav-toggle span + span {
-  margin-top: 5px;
+.site-nav.open .nav-toggle .menu-label {
+  display: none;
 }
 
-.site-nav.open .nav-toggle span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+.nav-toggle .close-label {
+  display: none;
 }
 
-.site-nav.open .nav-toggle span:nth-child(2) {
-  opacity: 0;
-}
-
-.site-nav.open .nav-toggle span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+.site-nav.open .nav-toggle .close-label {
+  display: inline;
 }
 
 @media (max-width: 600px) {
