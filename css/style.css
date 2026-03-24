@@ -646,7 +646,7 @@ main p {
 
 .accommodation-cell-title {
   font-family: var(--font-newicon);
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-size: 1rem;
   font-weight: 400;
   text-transform: uppercase;
   color: var(--text);
