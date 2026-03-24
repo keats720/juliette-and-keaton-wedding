@@ -148,7 +148,7 @@
     .radio-group {
       display: flex;
       gap: 1.5rem;
-      margin-top: 0.25rem;
+      margin-top: 0.6rem;
     }
 
     .radio-option {
@@ -192,7 +192,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.6rem 1.25rem;
-      margin-top: 0.25rem;
+      margin-top: 0.6rem;
     }
 
     .checkbox-option {
@@ -431,9 +431,9 @@
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       border-top: 1px solid var(--btn-border);
-      font-family: var(--font-loop);
-      font-size: 1.1rem;
-      color: var(--text);
+      font-family: var(--font-tenor);
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
     .spinner {
@@ -531,7 +531,7 @@
           <div class="shared-fields">
             <div class="field-group">
               <label>Accommodation Plan</label>
-              <p class="field-note">So that we can plan numbers for the shuttle service. See information page for more details about the shuttle.</p>
+              <p class="field-note">So that we can plan numbers for the shuttle service. See information page for more details about accomodation and the shuttle.</p>
               <div class="checkbox-group">
                 <label class="checkbox-option">
                   <input type="checkbox" name="accommodation" value="Coast Bastion Hotel">
@@ -588,6 +588,7 @@
           <h2>Thank You</h2>
           <p id="success-message"></p>
           <p class="more-info">More information to follow</p>
+          <a class="btn" href="index.html" style="margin-top: 1.5rem;">&larr; Back to Home</a>
         </div>
 
       </div>
@@ -833,6 +834,7 @@
 
         document.getElementById('rsvp-fields').classList.remove('visible');
         document.getElementById('success-screen').classList.add('visible');
+        hideMessage();
 
         const anyAttending = guestPayloads.some(g => g.attending);
         document.getElementById('success-message').textContent =
