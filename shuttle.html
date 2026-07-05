@@ -89,7 +89,8 @@
       font-weight: 400;
     }
 
-    .rsvp-card input[type="text"] {
+    .rsvp-card input[type="text"],
+    .rsvp-card textarea {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid var(--btn-border);
@@ -103,12 +104,19 @@
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .rsvp-card input::placeholder {
+    .rsvp-card textarea {
+      resize: vertical;
+      min-height: 3.2rem;
+    }
+
+    .rsvp-card input::placeholder,
+    .rsvp-card textarea::placeholder {
       color: var(--btn-text);
       opacity: 0.6;
     }
 
-    .rsvp-card input:focus {
+    .rsvp-card input:focus,
+    .rsvp-card textarea:focus {
       border-color: var(--text);
       box-shadow: 0 0 0 3px rgba(44, 126, 244, 0.12);
     }
@@ -510,12 +518,18 @@
 
           <div class="field-group">
             <label>Seats Needed</label>
-            <p class="field-note">We've counted everyone in your party — adjust if some of you are getting there another way.</p>
+            <p class="field-note">We've counted everyone in your party — adjust down if some of you are getting there another way, or up if you're reserving for others too.</p>
             <div class="seat-stepper">
               <button type="button" id="seat-minus" onclick="changeSeats(-1)" aria-label="Fewer seats">&minus;</button>
               <span class="seat-count" id="seat-count">1</span>
               <button type="button" id="seat-plus" onclick="changeSeats(1)" aria-label="More seats">+</button>
             </div>
+          </div>
+
+          <div class="field-group">
+            <label for="additional-people">Additional People</label>
+            <p class="field-note">Reserving seats for guests outside your party? List their names here — and please let them know you've booked for them, so we don't end up with duplicate reservations!</p>
+            <textarea id="additional-people" rows="2" placeholder="e.g. Grandma & Grandpa Smith"></textarea>
           </div>
 
           <div class="field-group">
@@ -611,15 +625,17 @@
         partyCode = code;
         slots = data.slots || [];
 
-        // Max seats = every guest plus their plus ones.
         // Default = everyone attending (falls back to the whole
-        // party when no one has RSVP'd yet).
-        maxSeats = data.guests.reduce((n, g) => n + 1 + (g.hasPlusOne ? 1 : 0), 0);
+        // party when no one has RSVP'd yet). Parties may book beyond
+        // their own headcount — e.g. for relatives in other parties —
+        // up to a full shuttle.
+        const partySeats = data.guests.reduce((n, g) => n + 1 + (g.hasPlusOne ? 1 : 0), 0);
+        maxSeats = Math.max(partySeats, ...slots.map(s => s.capacity), 1);
         const attendingSeats = data.guests.reduce((n, g) => {
           if (g.previousRsvp && !g.previousRsvp.attending) return n;
           return n + 1 + (g.hasPlusOne ? 1 : 0);
         }, 0);
-        seats = Math.max(1, attendingSeats || maxSeats);
+        seats = Math.max(1, attendingSeats || partySeats);
 
         hadBooking = false;
         selectedSlotId = null;
@@ -628,6 +644,8 @@
           selectedSlotId = data.existing.slotId;
           seats = Math.min(Math.max(1, data.existing.seats || seats), maxSeats);
         }
+        document.getElementById('additional-people').value =
+          (data.existing && data.existing.additional) || '';
 
         renderPartyNames(data.guests.map(g => g.name).filter(Boolean));
         document.getElementById('cancel-btn').style.display = hadBooking ? '' : 'none';
@@ -744,7 +762,12 @@
         const res = await fetch(`${API_BASE}/shuttle-submit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: partyCode, slotId: selectedSlotId, seats })
+          body: JSON.stringify({
+            code: partyCode,
+            slotId: selectedSlotId,
+            seats,
+            additional: document.getElementById('additional-people').value.trim(),
+          })
         });
 
         const data = await res.json();
