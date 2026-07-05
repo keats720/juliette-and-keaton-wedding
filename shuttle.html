@@ -628,9 +628,8 @@
         // Default = everyone attending (falls back to the whole
         // party when no one has RSVP'd yet). Parties may book beyond
         // their own headcount — e.g. for relatives in other parties —
-        // up to a full shuttle.
+        // up to the seats still free on a shuttle.
         const partySeats = data.guests.reduce((n, g) => n + 1 + (g.hasPlusOne ? 1 : 0), 0);
-        maxSeats = Math.max(partySeats, ...slots.map(s => s.capacity), 1);
         const attendingSeats = data.guests.reduce((n, g) => {
           if (g.previousRsvp && !g.previousRsvp.attending) return n;
           return n + 1 + (g.hasPlusOne ? 1 : 0);
@@ -642,10 +641,12 @@
         if (data.existing && slots.some(s => s.id === data.existing.slotId)) {
           hadBooking = true;
           selectedSlotId = data.existing.slotId;
-          seats = Math.min(Math.max(1, data.existing.seats || seats), maxSeats);
+          seats = Math.max(1, data.existing.seats || seats);
         }
         document.getElementById('additional-people').value =
           (data.existing && data.existing.additional) || '';
+
+        updateSeatCap();
 
         renderPartyNames(data.guests.map(g => g.name).filter(Boolean));
         document.getElementById('cancel-btn').style.display = hadBooking ? '' : 'none';
@@ -698,6 +699,16 @@
 
     // ── Seats stepper ───────────────────────────────────────
 
+    // Cap = seats still free (capacity minus other parties' bookings)
+    // on the selected shuttle, or on the emptiest shuttle when none
+    // is selected yet.
+    function updateSeatCap() {
+      const pool = selectedSlotId ? slots.filter(s => s.id === selectedSlotId) : slots;
+      const remaining = pool.map(s => Math.max(0, s.capacity - s.taken));
+      maxSeats = Math.max(1, ...remaining);
+      if (seats > maxSeats) seats = maxSeats;
+    }
+
     function changeSeats(delta) {
       seats = Math.min(maxSeats, Math.max(1, seats + delta));
       renderSeats();
@@ -740,6 +751,8 @@
 
         row.querySelector('input').addEventListener('change', () => {
           selectedSlotId = slot.id;
+          updateSeatCap();
+          renderSeats();
           renderSlots();
         });
 
@@ -825,6 +838,8 @@
         const data = await res.json();
         if (res.ok && data.slots) {
           slots = data.slots;
+          updateSeatCap();
+          renderSeats();
           renderSlots();
         }
       } catch (err) {
