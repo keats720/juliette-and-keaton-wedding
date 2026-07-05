@@ -249,6 +249,22 @@
       border-bottom: 1px solid var(--btn-border);
     }
 
+    .party-label {
+      display: block;
+      font-family: var(--font-tenor);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .party-name {
+      display: block;
+      line-height: 1.5;
+    }
+
     /* Seat stepper */
     .seat-stepper {
       display: flex;
@@ -613,8 +629,7 @@
           seats = Math.min(Math.max(1, data.existing.seats || seats), maxSeats);
         }
 
-        document.getElementById('party-names').textContent =
-          data.guests.map(g => g.name).filter(Boolean).join(' & ');
+        renderPartyNames(data.guests.map(g => g.name).filter(Boolean));
         document.getElementById('cancel-btn').style.display = hadBooking ? '' : 'none';
 
         renderSeats();
@@ -634,6 +649,23 @@
       }
 
       setLoading('lookup-btn', false);
+    }
+
+    function renderPartyNames(names) {
+      const container = document.getElementById('party-names');
+      container.innerHTML = '';
+
+      const label = document.createElement('span');
+      label.className = 'party-label';
+      label.textContent = 'Party of';
+      container.appendChild(label);
+
+      names.forEach((name, i) => {
+        const line = document.createElement('span');
+        line.className = 'party-name';
+        line.textContent = (names.length > 1 && i === names.length - 1) ? `& ${name}` : name;
+        container.appendChild(line);
+      });
     }
 
     // ── Seats stepper ───────────────────────────────────────
