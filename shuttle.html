@@ -660,10 +660,20 @@
       label.textContent = 'Party of';
       container.appendChild(label);
 
+      if (names.length <= 2) {
+        // Couples and solo guests read as one line: "A & B"
+        const line = document.createElement('span');
+        line.className = 'party-name';
+        line.textContent = names.join(' & ');
+        container.appendChild(line);
+        return;
+      }
+
+      // Bigger parties get a stacked list with "&" before the last name
       names.forEach((name, i) => {
         const line = document.createElement('span');
         line.className = 'party-name';
-        line.textContent = (names.length > 1 && i === names.length - 1) ? `& ${name}` : name;
+        line.textContent = i === names.length - 1 ? `& ${name}` : name;
         container.appendChild(line);
       });
     }
