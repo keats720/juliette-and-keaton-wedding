@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shuttle — Juliette & Keaton</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
+  <style>
+    html, body {
+      overflow-x: hidden;
+    }
+
+    body {
+      position: relative;
+    }
+
+    .rsvp-bg-flower {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110vw;
+      max-width: 900px;
+      height: auto;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+      color: var(--text);
+    }
+
+    .rsvp-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    .rsvp-card {
+      background: rgba(213, 226, 240, 0.88);
+      border: 1px solid var(--btn-border);
+      padding: 3rem 2.5rem;
+      position: relative;
+      border-radius: 4px;
+    }
+
+    .rsvp-card::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid var(--btn-border);
+      border-radius: 3px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .rsvp-card h1 {
+      font-family: var(--font-newicon);
+      font-weight: 300;
+      font-size: 2.4rem;
+      text-align: center;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .rsvp-subtitle {
+      text-align: center;
+      font-family: var(--font-tenor);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .rsvp-card label {
+      font-family: var(--font-tenor);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .rsvp-card input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--btn-border);
+      background: #d3dfed;
+      font-family: var(--font-tenor);
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      border-radius: 4px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .rsvp-card input::placeholder {
+      color: var(--btn-text);
+      opacity: 0.6;
+    }
+
+    .rsvp-card input:focus {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px rgba(44, 126, 244, 0.12);
+    }
+
+    .field-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .field-note {
+      font-family: var(--font-tenor);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0.25rem 0 0.5rem;
+      font-weight: 400;
+    }
+
+    .lookup-group {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .lookup-group input {
+      flex: 1;
+    }
+
+    .rsvp-btn {
+      display: inline-block;
+      font-family: var(--font-newicon);
+      font-weight: 400;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.75rem 2rem;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--btn-border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .rsvp-btn:hover {
+      background: #cdd9ea;
+      border-color: #bccde2;
+    }
+
+    .rsvp-btn-primary {
+      background: var(--text);
+      color: var(--white);
+      border-color: var(--text);
+    }
+
+    .rsvp-btn-primary:hover {
+      background: var(--text-muted);
+      border-color: var(--text-muted);
+    }
+
+    .rsvp-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .rsvp-btn-full {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .rsvp-fields {
+      display: none;
+      animation: rsvp-fadeIn 0.4s ease;
+    }
+
+    .rsvp-fields.visible {
+      display: block;
+    }
+
+    .rsvp-message {
+      text-align: center;
+      padding: 0.75rem;
+      font-family: var(--font-tenor);
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+      display: none;
+      border-radius: 4px;
+    }
+
+    .rsvp-message.visible {
+      display: block;
+      animation: rsvp-fadeIn 0.3s ease;
+    }
+
+    .rsvp-message.error {
+      color: #B85C5C;
+      background: #faf0f0;
+      border: 1px solid #e8d0d0;
+    }
+
+    .rsvp-message.success {
+      color: var(--text-muted);
+      background: rgba(213, 226, 240, 0.5);
+      border: 1px solid var(--btn-border);
+    }
+
+    .rsvp-message.info {
+      color: var(--text-muted);
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+    }
+
+    .rsvp-back-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-tenor);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 1rem;
+      transition: color 0.2s;
+    }
+
+    .rsvp-back-btn:hover {
+      color: var(--text);
+    }
+
+    .party-names {
+      font-family: var(--font-newicon);
+      font-weight: 100;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--btn-border);
+    }
+
+    /* Seat stepper */
+    .seat-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 0.6rem;
+    }
+
+    .seat-stepper button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--btn-border);
+      background: #d3dfed;
+      color: var(--text);
+      font-family: var(--font-tenor);
+      font-size: 1.2rem;
+      line-height: 1;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .seat-stepper button:hover:not(:disabled) {
+      background: #cdd9ea;
+      border-color: #bccde2;
+    }
+
+    .seat-stepper button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .seat-count {
+      font-family: var(--font-newicon);
+      font-weight: 300;
+      font-size: 1.8rem;
+      color: var(--text);
+      min-width: 2.5rem;
+      text-align: center;
+    }
+
+    /* Slot list */
+    .slot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+    }
+
+    .slot-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--btn-border);
+      background: #d3dfed;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+
+    .slot-option:hover:not(.disabled) {
+      border-color: var(--text);
+    }
+
+    .slot-option.selected {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px rgba(44, 126, 244, 0.12);
+    }
+
+    .slot-option.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .slot-option input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--text);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .slot-option input[type="radio"]:checked {
+      border-color: var(--text-muted);
+      background: var(--text-muted);
+      box-shadow: inset 0 0 0 3px white;
+    }
+
+    .slot-option input[type="radio"]:disabled {
+      cursor: not-allowed;
+    }
+
+    .slot-label {
+      flex: 1;
+      font-family: var(--font-tenor);
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .slot-remaining {
+      font-family: var(--font-tenor);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .slot-remaining.full {
+      color: #B85C5C;
+    }
+
+    .cancel-link {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: none;
+      border: none;
+      font-family: var(--font-tenor);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-top: 1rem;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .cancel-link:hover {
+      color: #B85C5C;
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+      animation: rsvp-fadeIn 0.5s ease;
+    }
+
+    .success-screen.visible {
+      display: block;
+    }
+
+    .success-screen h2 {
+      font-family: var(--font-newicon);
+      font-weight: 300;
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+
+    .success-screen p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: rsvp-spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+
+    .rsvp-btn:not(.rsvp-btn-primary) .spinner {
+      border: 2px solid rgba(44, 126, 244, 0.3);
+      border-top-color: var(--text);
+    }
+
+    @keyframes rsvp-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rsvp-fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      .rsvp-card { padding: 2rem 1.5rem; }
+      .rsvp-card h1 { font-size: 1.8rem; }
+      .rsvp-container { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+    <button class="nav-toggle" aria-label="Menu" onclick="this.parentElement.classList.toggle('open')">
+      <span class="menu-label">Menu</span><span class="close-label">✕</span>
+    </button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="information.html">Information</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="dress-code.html">Attire</a></li>
+      <li><a href="registry.html">Registry</a></li>
+      <li><a href="rsvp.html">RSVP</a></li>
+      <li><a href="shuttle.html">Shuttle</a></li>
+    </ul>
+  </nav>
+
+  <main style="position: relative;">
+    <img src="assets/flower.svg" alt="" class="rsvp-bg-flower" aria-hidden="true">
+    <div class="rsvp-container">
+      <div class="rsvp-card">
+
+        <h1>Shuttle</h1>
+        <p class="rsvp-subtitle">Reserve your ride from the Coast Bastion Hotel to the venue</p>
+
+        <div id="msg" class="rsvp-message"></div>
+
+        <!-- Step 1: Code entry -->
+        <div id="lookup-section">
+          <div class="field-group">
+            <label for="rsvp-code">Your RSVP Code</label>
+            <div class="lookup-group">
+              <input type="text" id="rsvp-code" placeholder="Enter your code" autocomplete="off">
+              <button class="rsvp-btn" id="lookup-btn" onclick="lookupShuttle()">Start</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Slot selection -->
+        <div id="shuttle-fields" class="rsvp-fields">
+          <button class="rsvp-back-btn" onclick="goBack()">&larr; Back</button>
+
+          <p id="party-names" class="party-names"></p>
+
+          <div class="field-group">
+            <label>Seats Needed</label>
+            <p class="field-note">We've counted everyone in your party — adjust if some of you are getting there another way.</p>
+            <div class="seat-stepper">
+              <button type="button" id="seat-minus" onclick="changeSeats(-1)" aria-label="Fewer seats">&minus;</button>
+              <span class="seat-count" id="seat-count">1</span>
+              <button type="button" id="seat-plus" onclick="changeSeats(1)" aria-label="More seats">+</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Departure Time</label>
+            <p class="field-note">Pick the departure that suits you — seats are first come, first served.</p>
+            <div class="slot-list" id="slot-list"></div>
+          </div>
+
+          <button class="rsvp-btn rsvp-btn-primary rsvp-btn-full" id="submit-btn" onclick="submitShuttle()">
+            Reserve Seats
+          </button>
+          <button class="cancel-link" id="cancel-btn" onclick="cancelBooking()" style="display: none;">
+            Cancel our shuttle reservation
+          </button>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="success-screen" class="success-screen">
+          <h2>All Aboard</h2>
+          <p id="success-message"></p>
+          <a class="btn" href="index.html" style="margin-top: 1.5rem;">&larr; Back to Home</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      document.getElementById('site-nav').classList.add('open');
+    }
+  </script>
+  <script src="js/rsvp-code.js"></script>
+  <script src="js/dragonfly.js"></script>
+  <script>
+    // Same-origin when previewing locally (mock server), worker in production
+    const API_BASE = ['localhost', '127.0.0.1'].includes(location.hostname)
+      ? ''
+      : 'https://wedding-rsvp.keaton-d8b.workers.dev';
+
+    let partyCode = '';
+    let slots = [];
+    let seats = 1;
+    let maxSeats = 1;
+    let selectedSlotId = null;
+    let hadBooking = false;
+
+    (function autoFillFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (code) {
+        document.getElementById('rsvp-code').value = code;
+        lookupShuttle();
+      }
+    })();
+
+    document.getElementById('rsvp-code').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') lookupShuttle();
+    });
+
+    // ── Lookup ──────────────────────────────────────────────
+
+    async function lookupShuttle() {
+      const code = document.getElementById('rsvp-code').value.trim();
+      if (!code) {
+        showMessage('Please enter your RSVP code.', 'error');
+        return;
+      }
+
+      setLoading('lookup-btn', true);
+      hideMessage();
+
+      try {
+        const res = await fetch(`${API_BASE}/shuttle-lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.guests || data.guests.length === 0) {
+          showMessage(
+            "We couldn't find that code. Please check the code from your invitation email and try again.",
+            'error'
+          );
+          setLoading('lookup-btn', false);
+          return;
+        }
+
+        partyCode = code;
+        slots = data.slots || [];
+
+        // Max seats = every guest plus their plus ones.
+        // Default = everyone attending (falls back to the whole
+        // party when no one has RSVP'd yet).
+        maxSeats = data.guests.reduce((n, g) => n + 1 + (g.hasPlusOne ? 1 : 0), 0);
+        const attendingSeats = data.guests.reduce((n, g) => {
+          if (g.previousRsvp && !g.previousRsvp.attending) return n;
+          return n + 1 + (g.hasPlusOne ? 1 : 0);
+        }, 0);
+        seats = Math.max(1, attendingSeats || maxSeats);
+
+        hadBooking = false;
+        selectedSlotId = null;
+        if (data.existing && slots.some(s => s.id === data.existing.slotId)) {
+          hadBooking = true;
+          selectedSlotId = data.existing.slotId;
+          seats = Math.min(Math.max(1, data.existing.seats || seats), maxSeats);
+        }
+
+        document.getElementById('party-names').textContent =
+          data.guests.map(g => g.name).filter(Boolean).join(' & ');
+        document.getElementById('cancel-btn').style.display = hadBooking ? '' : 'none';
+
+        renderSeats();
+        renderSlots();
+
+        document.getElementById('lookup-section').style.display = 'none';
+        document.getElementById('shuttle-fields').classList.add('visible');
+
+        if (slots.length === 0) {
+          showMessage('Shuttle times have not been announced yet — please check back soon.', 'info');
+        } else if (hadBooking) {
+          showMessage('We found your existing shuttle reservation — feel free to update it.', 'info');
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong. Please try again.', 'error');
+      }
+
+      setLoading('lookup-btn', false);
+    }
+
+    // ── Seats stepper ───────────────────────────────────────
+
+    function changeSeats(delta) {
+      seats = Math.min(maxSeats, Math.max(1, seats + delta));
+      renderSeats();
+      renderSlots();
+    }
+
+    function renderSeats() {
+      document.getElementById('seat-count').textContent = seats;
+      document.getElementById('seat-minus').disabled = seats <= 1;
+      document.getElementById('seat-plus').disabled = seats >= maxSeats;
+    }
+
+    // ── Slot list ───────────────────────────────────────────
+
+    function renderSlots() {
+      const list = document.getElementById('slot-list');
+      list.innerHTML = '';
+
+      slots.forEach(slot => {
+        const remaining = Math.max(0, slot.capacity - slot.taken);
+        const fits = remaining >= seats;
+
+        if (!fits && selectedSlotId === slot.id) selectedSlotId = null;
+
+        const row = document.createElement('label');
+        row.className = 'slot-option'
+          + (selectedSlotId === slot.id ? ' selected' : '')
+          + (fits ? '' : ' disabled');
+
+        let remainingText;
+        if (remaining === 0) remainingText = 'Full';
+        else if (!fits) remainingText = `Only ${remaining} left`;
+        else remainingText = `${remaining} seat${remaining === 1 ? '' : 's'} left`;
+
+        row.innerHTML = `
+          <input type="radio" name="slot" value="${escAttr(slot.id)}"
+            ${selectedSlotId === slot.id ? 'checked' : ''} ${fits ? '' : 'disabled'}>
+          <span class="slot-label">${escHtml(slot.label)}</span>
+          <span class="slot-remaining${remaining === 0 ? ' full' : ''}">${remainingText}</span>`;
+
+        row.querySelector('input').addEventListener('change', () => {
+          selectedSlotId = slot.id;
+          renderSlots();
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    // ── Submit ──────────────────────────────────────────────
+
+    async function submitShuttle() {
+      if (!selectedSlotId) {
+        showMessage('Please pick a departure time.', 'error');
+        return;
+      }
+
+      setLoading('submit-btn', true);
+      hideMessage();
+
+      try {
+        const res = await fetch(`${API_BASE}/shuttle-submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: partyCode, slotId: selectedSlotId, seats })
+        });
+
+        const data = await res.json();
+
+        if (res.status === 409) {
+          showMessage(data.error || 'That departure just filled up — please pick another.', 'error');
+          await refreshSlots();
+          setLoading('submit-btn', false);
+          return;
+        }
+
+        if (!res.ok) throw new Error(data.error || 'Submit failed');
+
+        const slot = slots.find(s => s.id === selectedSlotId);
+        showSuccess(`You have ${seats} seat${seats === 1 ? '' : 's'} reserved on the ${slot ? slot.label : 'shuttle'} departure. See you there!`);
+      } catch (err) {
+        console.error(err);
+        showMessage(err.message || 'Something went wrong saving your reservation. Please try again.', 'error');
+      }
+
+      setLoading('submit-btn', false);
+    }
+
+    async function cancelBooking() {
+      if (!confirm('Cancel your shuttle reservation?')) return;
+
+      setLoading('submit-btn', true);
+      hideMessage();
+
+      try {
+        const res = await fetch(`${API_BASE}/shuttle-submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: partyCode, slotId: null })
+        });
+
+        if (!res.ok) throw new Error('Cancel failed');
+
+        showSuccess('Your shuttle reservation has been cancelled. You can rebook anytime.');
+      } catch (err) {
+        console.error(err);
+        showMessage('Something went wrong cancelling your reservation. Please try again.', 'error');
+      }
+
+      setLoading('submit-btn', false);
+    }
+
+    async function refreshSlots() {
+      try {
+        const res = await fetch(`${API_BASE}/shuttle-lookup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: partyCode })
+        });
+        const data = await res.json();
+        if (res.ok && data.slots) {
+          slots = data.slots;
+          renderSlots();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function showSuccess(message) {
+      document.getElementById('shuttle-fields').classList.remove('visible');
+      document.getElementById('success-screen').classList.add('visible');
+      document.getElementById('success-message').textContent = message;
+      hideMessage();
+    }
+
+    // ── Navigation ──────────────────────────────────────────
+
+    function goBack() {
+      partyCode = '';
+      slots = [];
+      selectedSlotId = null;
+      document.getElementById('shuttle-fields').classList.remove('visible');
+      document.getElementById('lookup-section').style.display = '';
+      hideMessage();
+    }
+
+    // ── Utilities ───────────────────────────────────────────
+
+    function showMessage(text, type) {
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = `rsvp-message visible ${type}`;
+    }
+
+    function hideMessage() {
+      document.getElementById('msg').className = 'rsvp-message';
+    }
+
+    function setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      if (loading) {
+        btn.disabled = true;
+        btn._origHTML = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner"></span> ' + btn.textContent;
+      } else {
+        btn.disabled = false;
+        if (btn._origHTML) btn.innerHTML = btn._origHTML;
+      }
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function escAttr(s) {
+      return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>
