@@ -1346,3 +1346,11 @@ main p {
     gap: 0.75rem;
   }
 }
+
+.lightbox-img {
+  will-change: transform;
+}
+
+.lightbox-img.zoom-anim {
+  transition: transform 0.25s ease;
+}

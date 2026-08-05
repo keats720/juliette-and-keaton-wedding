@@ -93,6 +93,7 @@
 
   function open(idx) {
     current = idx;
+    resetZoom(false);
     var p = album.photos[idx];
     var webSrc = base + '/web/' + p.f;
     // Show the (usually cached) thumbnail instantly, swap in the sharp
@@ -116,6 +117,7 @@
   function close() {
     lightbox.hidden = true;
     lbImg.src = '';
+    resetZoom(false);
     document.body.style.overflow = '';
   }
 
@@ -200,17 +202,98 @@
     if (e.key === 'ArrowRight') step(1);
   });
 
-  // Swipe navigation on touch devices (ignore mostly-vertical drags)
-  var touchX = null, touchY = null;
+  /* ---- Touch gestures: swipe to navigate, pinch/double-tap to zoom, drag to pan ---- */
+  var zoom = { s: 1, tx: 0, ty: 0 };
+  var g = { pinch: false, x0: 0, y0: 0, tx0: 0, ty0: 0, d0: 0, s0: 1, moved: false, lastTap: 0 };
+
+  function applyZoom(animate) {
+    lbImg.classList.toggle('zoom-anim', !!animate);
+    lbImg.style.transform = (zoom.s === 1 && !zoom.tx && !zoom.ty) ? '' :
+      'translate(' + zoom.tx + 'px,' + zoom.ty + 'px) scale(' + zoom.s + ')';
+  }
+
+  function resetZoom(animate) {
+    zoom = { s: 1, tx: 0, ty: 0 };
+    applyZoom(animate);
+  }
+
+  function clampPan() {
+    var r = lbImg.getBoundingClientRect();
+    var maxX = Math.max(0, (r.width - window.innerWidth) / 2 + 40);
+    var maxY = Math.max(0, (r.height - window.innerHeight) / 2 + 40);
+    zoom.tx = Math.min(maxX, Math.max(-maxX, zoom.tx));
+    zoom.ty = Math.min(maxY, Math.max(-maxY, zoom.ty));
+  }
+
+  function touchMid(e) {
+    return { x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+             y: (e.touches[0].clientY + e.touches[1].clientY) / 2 };
+  }
+  function touchDist(e) {
+    return Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                      e.touches[0].clientY - e.touches[1].clientY);
+  }
+
   lightbox.addEventListener('touchstart', function (e) {
-    touchX = e.touches[0].clientX;
-    touchY = e.touches[0].clientY;
+    if (e.touches.length === 2) {
+      g.pinch = true; g.d0 = touchDist(e); g.s0 = zoom.s;
+      g.tx0 = zoom.tx; g.ty0 = zoom.ty;
+    } else if (e.touches.length === 1) {
+      g.x0 = e.touches[0].clientX; g.y0 = e.touches[0].clientY;
+      g.tx0 = zoom.tx; g.ty0 = zoom.ty; g.moved = false;
+    }
   }, { passive: true });
+
+  lightbox.addEventListener('touchmove', function (e) {
+    if (g.pinch && e.touches.length === 2) {
+      e.preventDefault();
+      var m = touchMid(e);
+      var mx = m.x - window.innerWidth / 2, my = m.y - window.innerHeight / 2;
+      var s = Math.min(4, Math.max(1, g.s0 * touchDist(e) / g.d0));
+      zoom.s = s;
+      zoom.tx = mx - (s / g.s0) * (mx - g.tx0);
+      zoom.ty = my - (s / g.s0) * (my - g.ty0);
+      clampPan(); applyZoom(false);
+    } else if (!g.pinch && zoom.s > 1 && e.touches.length === 1) {
+      e.preventDefault();
+      zoom.tx = g.tx0 + (e.touches[0].clientX - g.x0);
+      zoom.ty = g.ty0 + (e.touches[0].clientY - g.y0);
+      g.moved = true;
+      clampPan(); applyZoom(false);
+    }
+  }, { passive: false });
+
   lightbox.addEventListener('touchend', function (e) {
-    if (touchX === null) return;
-    var dx = e.changedTouches[0].clientX - touchX;
-    var dy = e.changedTouches[0].clientY - touchY;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) step(dx < 0 ? 1 : -1);
-    touchX = touchY = null;
+    if (g.pinch) {
+      if (e.touches.length === 0) {
+        g.pinch = false;
+        if (zoom.s < 1.05) resetZoom(true);
+      }
+      return;
+    }
+    if (e.touches.length > 0) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - g.x0, dy = t.clientY - g.y0;
+    var isTap = Math.abs(dx) < 10 && Math.abs(dy) < 10 && e.target === lbImg;
+    if (zoom.s === 1) {
+      if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) {
+        step(dx < 0 ? 1 : -1);
+        return;
+      }
+      if (isTap) {
+        var now = Date.now();
+        if (now - g.lastTap < 300) {   // double-tap: zoom in at the tap point
+          zoom.s = 2.5;
+          zoom.tx = (t.clientX - window.innerWidth / 2) * (1 - 2.5);
+          zoom.ty = (t.clientY - window.innerHeight / 2) * (1 - 2.5);
+          clampPan(); applyZoom(true);
+          g.lastTap = 0;
+        } else { g.lastTap = now; }
+      }
+    } else if (!g.moved && isTap) {
+      var now2 = Date.now();
+      if (now2 - g.lastTap < 300) { resetZoom(true); g.lastTap = 0; }
+      else { g.lastTap = now2; }
+    }
   }, { passive: true });
 })();
