@@ -189,9 +189,12 @@
     });
   });
 
-  // On iOS/Android the share sheet ("Save Image") is the native way to get a
-  // photo into the camera roll; blob downloads land in the Files app instead.
-  var nativeShare = !!(navigator.canShare && navigator.share);
+  // On touch devices (iPhone/iPad/Android) the share sheet ("Save Image") is
+  // the native way to get a photo into the camera roll; blob downloads land in
+  // the Files app there. Desktops — even ones with navigator.share, like
+  // macOS Safari/Chrome — get a real file download.
+  var isTouch = window.matchMedia('(pointer: coarse)').matches;
+  var nativeShare = isTouch && !!(navigator.canShare && navigator.share);
   if (nativeShare) lbDownload.textContent = 'Save';
 
   lbDownload.addEventListener('click', function () {
