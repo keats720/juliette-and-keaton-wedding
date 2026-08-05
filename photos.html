@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juliette & Keaton — Wedding</title>
+  <title>Photos — Juliette & Keaton</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://use.typekit.net/xpa3edi.css">
@@ -25,29 +25,27 @@
     </ul>
   </nav>
 
-  <main class="home-page">
-    <div class="home-names">
-      <h1 class="home-name-first"><span class="name-first">J</span><span class="name-rest">uliette</span></h1>
-      <div class="home-and-keaton">
-        <p class="home-and">and</p>
-        <h1 class="home-name-second"><span class="name-first">K</span><span class="name-rest">eaton</span></h1>
-      </div>
+  <main>
+    <div class="page-title">
+      <h1>Photos<br><span class="title-script">from our day</span></h1>
     </div>
-    <div class="home-floral" aria-hidden="true">
-        <img src="assets/flower.svg" alt="" class="home-floral-img">
-      </div>
-    <div class="home-details">
-      <p class="home-celebration">Can't wait to celebrate with you on</p>
-      <div class="home-date-loc">
-        <span class="home-date">July 18, 2026</span>
-        <span class="home-divider" aria-hidden="true"></span>
-        <span class="home-loc">Cinnabar Valley</span>
-      </div>
-    </div>
-    <div class="home-rsvp-wrap">
-      <a class="btn home-rsvp" href="rsvp.html">RSVP</a>
+
+    <div id="gallery" class="photo-gallery">
+      <p class="photo-loading">Loading photos…</p>
     </div>
   </main>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <button class="lightbox-prev" aria-label="Previous photo">‹</button>
+    <img class="lightbox-img" alt="Wedding photo">
+    <button class="lightbox-next" aria-label="Next photo">›</button>
+    <div class="lightbox-bar">
+      <span class="lightbox-count"></span>
+      <button class="lightbox-share" type="button">Share</button>
+      <button class="lightbox-download" type="button">Download</button>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <!-- Dragonfly injected by js/dragonfly.js -->
@@ -55,5 +53,6 @@
 
   <script src="js/rsvp-code.js"></script>
   <script src="js/dragonfly.js"></script>
+  <script src="js/photos.js"></script>
 </body>
 </html>

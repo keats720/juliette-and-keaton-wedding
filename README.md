@@ -23,6 +23,30 @@ Static wedding website. Host on **GitHub Pages** with your own custom URL.
 - **Accommodation**: Add hotel block booking link/code on `accommodation.html` when you have it.
 - **Dress code**: Update `dress-code.html` when you have the theme.
 
+## Photos (Cloudflare R2)
+
+Wedding photos live in a Cloudflare R2 bucket (free tier covers 10GB, no
+egress fees) — never in this repo. The gallery page (`photos.html`) reads
+`photos-manifest.json` (committed here) and loads images from R2.
+
+One-time setup (needs `wrangler login` first):
+
+```sh
+npx wrangler r2 bucket create wedding-photos
+npx wrangler r2 bucket dev-url enable wedding-photos   # prints the public https://pub-….r2.dev URL
+npx wrangler r2 bucket cors set wedding-photos --file scripts/r2-cors.json
+```
+
+Then resize + upload (re-run any time the photographer delivers more folders —
+already-uploaded files are skipped):
+
+```sh
+scripts/prepare-photos.sh "<path to photo folder>" wedding-photos "https://pub-eb6629a1914b47b5b811ea91951bfe84.r2.dev"
+```
+
+Commit the updated `photos-manifest.json` and push. `photo-staging/` is
+gitignored scratch output — safe to delete once uploaded.
+
 ## Pages
 
 | Page           | Path               |
