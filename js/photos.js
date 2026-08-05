@@ -94,7 +94,13 @@
   function open(idx) {
     current = idx;
     var p = album.photos[idx];
-    lbImg.src = base + '/web/' + p.f;
+    var webSrc = base + '/web/' + p.f;
+    // Show the (usually cached) thumbnail instantly, swap in the sharp
+    // version when it finishes loading — avoids a blank screen on cellular.
+    lbImg.src = base + '/thumb/' + p.f;
+    var hi = new Image();
+    hi.onload = function () { if (current === idx) lbImg.src = webSrc; };
+    hi.src = webSrc;
     lbCount.textContent = (idx + 1) + ' / ' + album.photos.length;
     lightbox.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -194,13 +200,17 @@
     if (e.key === 'ArrowRight') step(1);
   });
 
-  // Swipe navigation on touch devices
-  var touchX = null;
-  lightbox.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  // Swipe navigation on touch devices (ignore mostly-vertical drags)
+  var touchX = null, touchY = null;
+  lightbox.addEventListener('touchstart', function (e) {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
   lightbox.addEventListener('touchend', function (e) {
     if (touchX === null) return;
     var dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
-    touchX = null;
+    var dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) step(dx < 0 ? 1 : -1);
+    touchX = touchY = null;
   }, { passive: true });
 })();
