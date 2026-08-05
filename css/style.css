@@ -1354,3 +1354,20 @@ main p {
 .lightbox-img.zoom-anim {
   transition: transform 0.25s ease;
 }
+
+/* Keep the lightbox pinned to the visual viewport and stop sideways overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+.lightbox {
+  width: 100vw;
+  width: 100dvw;
+}
+
+@media (max-width: 600px) {
+  .photo-section-title {
+    font-size: 1.2rem;
+    overflow-wrap: anywhere;
+  }
+}

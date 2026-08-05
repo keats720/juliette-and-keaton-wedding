@@ -91,7 +91,25 @@
 
   /* ---- Lightbox ---- */
 
+  // iOS Safari ignores body overflow:hidden — lock scroll by fixing the body.
+  var savedScroll = 0;
+  function lockScroll() {
+    savedScroll = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = -savedScroll + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+  }
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, savedScroll);
+  }
+
   function open(idx) {
+    if (lightbox.hidden) lockScroll();
     current = idx;
     resetZoom(false);
     var p = album.photos[idx];
@@ -104,9 +122,16 @@
     hi.src = webSrc;
     lbCount.textContent = (idx + 1) + ' / ' + album.photos.length;
     lightbox.hidden = false;
-    document.body.style.overflow = 'hidden';
     preload(idx + 1); preload(idx - 1);
   }
+
+  // Rotation / viewport changes: drop any stale zoom state so the photo re-centers.
+  window.addEventListener('resize', function () {
+    if (!lightbox.hidden) resetZoom(false);
+  });
+  window.addEventListener('orientationchange', function () {
+    if (!lightbox.hidden) resetZoom(false);
+  });
 
   function preload(idx) {
     if (!album || idx < 0 || idx >= album.photos.length) return;
@@ -118,7 +143,7 @@
     lightbox.hidden = true;
     lbImg.src = '';
     resetZoom(false);
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 
   function step(delta) {
